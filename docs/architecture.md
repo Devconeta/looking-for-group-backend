@@ -3,7 +3,6 @@
 - [Architecture](#architecture)
   - [`.github/workflows`](#githubworkflows)
     - [`lint.yml`](#lintyml)
-  - [`.husky`](#husky)
   - [`.vscode`](#vscode)
   - [`docs`](#docs)
   - [`.vuepress`](#vuepress)
@@ -40,10 +39,6 @@ Here you can create and store yml files for each github action.
 ### `lint.yml`
 
 Github action to run and show linter errors on each Pull request, by default it scans every pull request and push to main, develop or master branches.
-
-## `.husky`
-
-Folder which stores github hooks, by default it contains pre-commit hook which prevents push without fixing linter errors.
 
 ## `.vscode`
 

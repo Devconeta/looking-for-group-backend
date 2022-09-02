@@ -1,17 +1,15 @@
-# Awesome NestJS Boilerplate v8
+# Looking For Group NestJs Backend
 
-[![Awesome NestJS](https://img.shields.io/badge/Awesome-NestJS-blue.svg?longCache=true&style=flat-square)](https://github.com/juliandavidmr/awesome-nestjs)
-
-> This is an ever-evolving, very opinionated architecture and dev environment for new node projects using [NestJS](https://nestjs.com). Questions, feedback, and for now, even bikeshedding are welcome. 😄
+> This is the Looking For Group Project Backend. Created using https://github.com/NarHakobyan/awesome-nest-boilerplate
 
 ## Getting started
 
 ```bash
-# 1. Clone the repository or click on "Use this template" button.
-npx degit NarHakobyan/awesome-nest-boilerplate my-nest-app
+# 1. Clone the repository.
+git clone https://github.com/Devconeta/looking-for-group-backend.git
 
 # 2. Enter your newly-cloned folder.
-cd my-nest-app
+cd looking-for-group-backend
 
 # 3. Create Environment variables file.
 cp .env.example .env
@@ -20,19 +18,8 @@ cp .env.example .env
 yarn
 ```
 
-## Checklist
-
-When you use this template, try follow the checklist to update your info properly
-
-- [ ] Change the author name in `LICENSE`
-- [ ] Change configurations in `.env`
-- [ ] Remove the `.github` folder which contains the funding info
-- [ ] Clean up the README.md file
-
-And, enjoy :)
-
-
 ### Development
+
 ```bash
 # 4. Run development server and open http://localhost:3000
 yarn start:dev

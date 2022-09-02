@@ -1,9 +1,10 @@
 {
-    "cSpell.words": [
-        "Injectable",
-        "microservices",
-        "nestjs",
-        "postgres"
-    ],
-    "editor.detectIndentation": false
+  "cSpell.words": ["Injectable", "microservices", "nestjs", "postgres"],
+  "editor.detectIndentation": false,
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.formatOnPaste": false, // required
+  "editor.formatOnType": false, // required
+  "editor.formatOnSave": true, // optional
+  "editor.formatOnSaveMode": "file", // required to format on save
+  "files.autoSave": "onFocusChange" // optional but recommended
 }
