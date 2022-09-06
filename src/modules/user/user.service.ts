@@ -7,7 +7,6 @@ import { Transactional } from 'typeorm-transactional-cls-hooked';
 import type { PageDto } from '../../common/dto/page.dto';
 import { FileNotImageException, UserNotFoundException } from '../../exceptions';
 import { IFile } from '../../interfaces';
-import { AwsS3Service } from '../../shared/services/aws-s3.service';
 import { ValidatorService } from '../../shared/services/validator.service';
 import { UserRegisterDto } from '../auth/dto/UserRegisterDto';
 import { CreateSettingsCommand } from './commands/create-settings.command';
@@ -23,7 +22,6 @@ export class UserService {
   constructor(
     private userRepository: UserRepository,
     private validatorService: ValidatorService,
-    private awsS3Service: AwsS3Service,
     private commandBus: CommandBus,
   ) {}
 
@@ -65,10 +63,6 @@ export class UserService {
 
     if (file && !this.validatorService.isImage(file.mimetype)) {
       throw new FileNotImageException();
-    }
-
-    if (file) {
-      user.avatar = await this.awsS3Service.uploadImage(file);
     }
 
     await this.userRepository.save(user);

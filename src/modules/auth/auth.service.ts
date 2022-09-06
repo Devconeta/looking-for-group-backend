@@ -1,7 +1,9 @@
+/* eslint-disable simple-import-sort/imports */
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { validateHash } from '../../common/utils';
+
 import type { RoleType } from '../../constants';
 import { TokenType } from '../../constants';
 import { UserNotFoundException } from '../../exceptions';
@@ -30,6 +32,22 @@ export class AuthService {
         type: TokenType.ACCESS_TOKEN,
         role: data.role,
       }),
+    });
+  }
+
+  async createTemporalAccessToken(data: {
+    nonce: number;
+    address: string;
+  }): Promise<TokenPayloadDto> {
+    return new TokenPayloadDto({
+      expiresIn: 120,
+      accessToken: await this.jwtService.signAsync(
+        {
+          ...data,
+          type: TokenType.TEMPORAL_TOKEN,
+        },
+        { expiresIn: '120s' },
+      ),
     });
   }
 
