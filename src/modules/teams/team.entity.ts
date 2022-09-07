@@ -5,12 +5,12 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { RoleType } from '../../constants';
 import { UseDto, VirtualColumn } from '../../decorators';
 import { PostEntity } from '../post/post.entity';
-import type { UserDtoOptions } from './dtos/user.dto';
-import { UserDto } from './dtos/user.dto';
-import type { IUserSettingsEntity } from './user-settings.entity';
-import { UserSettingsEntity } from './user-settings.entity';
+import type { TeamDtoOptions } from './dtos/team.dto';
+import { TeamDto } from './dtos/team.dto';
+import type { ITeamSettingsEntity } from './team-settings.entity';
+import { TeamSettingsEntity } from './team-settings.entity';
 
-export interface IUserEntity extends IAbstractEntity<UserDto> {
+export interface ITeamEntity extends IAbstractEntity<TeamDto> {
     wallet?: string;
 
     firstName?: string;
@@ -29,14 +29,14 @@ export interface IUserEntity extends IAbstractEntity<UserDto> {
 
     fullName?: string;
 
-    settings?: IUserSettingsEntity;
+    settings?: ITeamSettingsEntity;
 }
 
-@Entity({ name: 'users' })
-@UseDto(UserDto)
-export class UserEntity
-    extends AbstractEntity<UserDto, UserDtoOptions>
-    implements IUserEntity {
+@Entity({ name: 'teams' })
+@UseDto(TeamDto)
+export class TeamEntity
+    extends AbstractEntity<TeamDto, TeamDtoOptions>
+    implements ITeamEntity {
     @Column({ nullable: true })
     wallet?: string;
 
@@ -64,8 +64,8 @@ export class UserEntity
     @VirtualColumn()
     fullName?: string;
 
-    @OneToOne(() => UserSettingsEntity, (userSettings) => userSettings.user)
-    settings?: UserSettingsEntity;
+    @OneToOne(() => TeamSettingsEntity, (teamSettings) => teamSettings.team)
+    settings?: TeamSettingsEntity;
 
     @OneToMany(() => PostEntity, (postEntity) => postEntity.user)
     posts: PostEntity[];

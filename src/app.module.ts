@@ -12,6 +12,7 @@ import { PostModule } from './modules/post/post.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
+import { TeamsService } from './modules/teams/teams.service';
 
 @Module({
   imports: [
@@ -39,8 +40,8 @@ import { SharedModule } from './shared/shared.module';
       imports: [SharedModule],
       inject: [ApiConfigService],
     }),
-    HealthCheckerModule,
+    HealthCheckerModule
   ],
-  providers: [],
+  providers: [TeamsService],
 })
 export class AppModule {}
