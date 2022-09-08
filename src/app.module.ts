@@ -1,5 +1,3 @@
-import './boilerplate.polyfill';
-
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,12 +10,15 @@ import { PostModule } from './modules/post/post.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
-import { TeamsService } from './modules/teams/teams.service';
+
+import './boilerplate.polyfill';
+import { TeamModule } from './modules/teams/team.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
+    TeamModule,
     PostModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -42,6 +43,6 @@ import { TeamsService } from './modules/teams/teams.service';
     }),
     HealthCheckerModule
   ],
-  providers: [TeamsService],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule { }

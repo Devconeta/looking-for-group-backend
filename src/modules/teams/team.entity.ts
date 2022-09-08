@@ -1,72 +1,40 @@
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+
+import { UserEntity } from '../../modules/user/user.entity';
 
 import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
-import { RoleType } from '../../constants';
-import { UseDto, VirtualColumn } from '../../decorators';
-import { PostEntity } from '../post/post.entity';
-import type { TeamDtoOptions } from './dtos/team.dto';
+import { UseDto } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
-import type { ITeamSettingsEntity } from './team-settings.entity';
-import { TeamSettingsEntity } from './team-settings.entity';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
-    wallet?: string;
+  name: string;
 
-    firstName?: string;
+  description?: string;
 
-    lastName?: string;
+  isPublic: boolean;
 
-    role: RoleType;
-
-    email?: string;
-
-    password?: string;
-
-    phone?: string;
-
-    avatar?: string;
-
-    fullName?: string;
-
-    settings?: ITeamSettingsEntity;
+  avatar?: string;
 }
 
-@Entity({ name: 'teams' })
+@Entity({ name: 'team' })
 @UseDto(TeamDto)
 export class TeamEntity
-    extends AbstractEntity<TeamDto, TeamDtoOptions>
-    implements ITeamEntity {
-    @Column({ nullable: true })
-    wallet?: string;
+  extends AbstractEntity<TeamDto>
+  implements ITeamEntity {
+  @Column({ nullable: false })
+  name: string;
 
-    @Column({ nullable: true })
-    firstName?: string;
+  @Column({ nullable: true })
+  description?: string;
 
-    @Column({ nullable: true })
-    lastName?: string;
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  members: UserEntity[];
 
-    @Column({ type: 'enum', enum: RoleType, default: RoleType.USER })
-    role: RoleType;
+  @Column({ nullable: false, default: false })
+  isPublic: boolean;
 
-    @Column({ unique: true, nullable: true })
-    email?: string;
-
-    @Column({ nullable: true })
-    password?: string;
-
-    @Column({ nullable: true })
-    phone?: string;
-
-    @Column({ nullable: true })
-    avatar?: string;
-
-    @VirtualColumn()
-    fullName?: string;
-
-    @OneToOne(() => TeamSettingsEntity, (teamSettings) => teamSettings.team)
-    settings?: TeamSettingsEntity;
-
-    @OneToMany(() => PostEntity, (postEntity) => postEntity.user)
-    posts: PostEntity[];
+  @Column({ nullable: true })
+  avatar?: string;
 }

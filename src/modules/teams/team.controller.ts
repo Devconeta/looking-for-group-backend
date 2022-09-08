@@ -3,12 +3,10 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { RoleType } from '../../constants';
-import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
-import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service';
+import { ApiPageOkResponse, Auth, UUIDParam } from '../../decorators';
 import { TranslationService } from '../../shared/services/translation.service';
-import { TeamsPageOptionsDto } from './dtos/team-page-options.dto';
 import { TeamDto } from './dtos/team.dto';
-import { TeamEntity } from './team.entity';
+import { TeamsPageOptionsDto } from './dtos/teams-page-options.dto';
 import { TeamService } from './team.service';
 
 @Controller('teams')
@@ -17,24 +15,9 @@ export class TeamController {
   constructor(
     private teamService: TeamService,
     private readonly translationService: TranslationService,
-  ) {}
-
-  @Get('admin')
-  @Auth([RoleType.USER])
-  @HttpCode(HttpStatus.OK)
-  @UseLanguageInterceptor()
-  async admin(@AuthUser() team: TeamEntity) {
-    const translation = await this.translationService.translate(
-      'admin.keywords.admin',
-    );
-
-    return {
-      text: `${translation} ${team.firstName}`,
-    };
-  }
+  ) { }
 
   @Get()
-  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   @ApiPageOkResponse({
     description: 'Get teams list',
@@ -42,13 +25,13 @@ export class TeamController {
   })
   getTeams(
     @Query(new ValidationPipe({ transform: true }))
+    @Query('address') address: string,
     pageOptionsDto: TeamsPageOptionsDto,
   ): Promise<PageDto<TeamDto>> {
-    return this.teamService.getTeams(pageOptionsDto);
+    return this.teamService.getTeams(address, pageOptionsDto);
   }
 
   @Get(':id')
-  @Auth([RoleType.USER])
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
