@@ -7,10 +7,6 @@ import { Trim } from '../../../decorators/transform.decorators';
 export class TeamCreateDto {
     @ApiProperty()
     @IsString()
-    readonly address: string;
-
-    @ApiProperty()
-    @IsString()
     @IsNotEmpty()
     readonly name: string;
 

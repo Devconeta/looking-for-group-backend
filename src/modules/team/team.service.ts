@@ -4,9 +4,7 @@ import type { FindOptionsWhere } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import type { PageDto } from '../../common/dto/page.dto';
-import { FileNotImageException, TeamNotFoundException } from '../../exceptions';
-import { IFile } from '../../interfaces';
-import { ValidatorService } from '../../shared/services/validator.service';
+import { TeamNotFoundException } from '../../exceptions';
 import type { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamsPageOptionsDto } from './dtos/teams-page-options.dto';
@@ -16,8 +14,7 @@ import { TeamRepository } from './team.repository';
 @Injectable()
 export class TeamService {
   constructor(
-    private teamRepository: TeamRepository,
-    private validatorService: ValidatorService
+    private teamRepository: TeamRepository
   ) { }
 
   /**
@@ -30,14 +27,8 @@ export class TeamService {
 
   @Transactional()
   async createTeam(
-    teamRegisterDto: TeamCreateDto,
-    file: IFile,
-  ): Promise<TeamEntity> {
+    teamRegisterDto: TeamCreateDto  ): Promise<TeamEntity> {
     const team = this.teamRepository.create(teamRegisterDto);
-
-    if (file && !this.validatorService.isImage(file.mimetype)) {
-      throw new FileNotImageException();
-    }
 
     await this.teamRepository.save(team);
 
