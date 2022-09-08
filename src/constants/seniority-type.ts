@@ -1,0 +1,6 @@
+export enum SeniorityType {
+  NEWBIE = 'NEWBIE',
+  BEGINNER = 'BEGINNER',
+  INTERMEDIATE = 'INTERMEDIATE',
+  EXPERT = 'EXPERT',
+}

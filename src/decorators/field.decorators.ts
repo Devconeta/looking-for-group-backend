@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { applyDecorators } from '@nestjs/common';
+
 import type { ApiPropertyOptions } from '@nestjs/swagger';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';

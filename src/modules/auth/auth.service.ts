@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt';
 
 import { validateHash } from '../../common/utils';
 
-import type { RoleType } from '../../constants';
 import { TokenType } from '../../constants';
 import { UserNotFoundException } from '../../exceptions';
 import { ApiConfigService } from '../../shared/services/api-config.service';
@@ -19,18 +18,16 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ApiConfigService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   async createAccessToken(data: {
-    role: RoleType;
     userId: Uuid;
   }): Promise<TokenPayloadDto> {
     return new TokenPayloadDto({
       expiresIn: this.configService.authConfig.jwtExpirationTime,
       accessToken: await this.jwtService.signAsync({
         userId: data.userId,
-        type: TokenType.ACCESS_TOKEN,
-        role: data.role,
+        type: TokenType.ACCESS_TOKEN
       }),
     });
   }

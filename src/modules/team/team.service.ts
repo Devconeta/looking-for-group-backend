@@ -1,20 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from '../../modules/user/user.entity';
 
-import type { FindOptionsWhere } from 'typeorm';
+import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
-import type { PageDto } from '../../common/dto/page.dto';
 import { TeamNotFoundException } from '../../exceptions';
 import type { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
-import { TeamsPageOptionsDto } from './dtos/teams-page-options.dto';
-import type { TeamEntity } from './team.entity';
-import { TeamRepository } from './team.repository';
+import { TeamEntity } from './team.entity';
+import { UserService } from '../../modules/user/user.service';
 
 @Injectable()
 export class TeamService {
   constructor(
-    private teamRepository: TeamRepository
+    @InjectRepository(TeamEntity)
+    private readonly teamRepository: Repository<TeamEntity>,
+    private readonly userService: UserService
   ) { }
 
   /**
@@ -26,8 +28,10 @@ export class TeamService {
 
 
   @Transactional()
-  async createTeam(
-    teamRegisterDto: TeamCreateDto  ): Promise<TeamEntity> {
+  async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
+    const user = await this.userService.findOne({ address: teamRegisterDto.address })
+    user && teamRegisterDto.members.push(user)
+
     const team = this.teamRepository.create(teamRegisterDto);
 
     await this.teamRepository.save(team);
@@ -35,14 +39,12 @@ export class TeamService {
     return team;
   }
 
-  async getTeams(address: string, pageOptionsDto: TeamsPageOptionsDto): Promise<PageDto<TeamDto>> {
+  async getTeams(address: string): Promise<TeamEntity[]> {
     const queryBuilder = this.teamRepository
       .createQueryBuilder('team')
-      .innerJoinAndSelect("team.members", "users")
-      .where("users.address = :address", { address })
-    const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
+      .innerJoinAndSelect("team.members", "member")
 
-    return items.toPageDto(pageMetaDto);
+    return queryBuilder.getMany();
   }
 
   async getTeam(teamId: Uuid): Promise<TeamDto> {

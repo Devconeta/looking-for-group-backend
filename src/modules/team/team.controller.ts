@@ -2,10 +2,10 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, ValidationPip
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
-import { ApiPageOkResponse, Auth, UUIDParam } from '../../decorators';
+import { ApiPageOkResponse, UUIDParam } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
-import { TeamsPageOptionsDto } from './dtos/teams-page-options.dto';
+import { TeamEntity } from './team.entity';
 import { TeamService } from './team.service';
 
 @Controller('teams')
@@ -34,11 +34,9 @@ export class TeamController {
     type: PageDto,
   })
   getTeams(
-    @Query(new ValidationPipe({ transform: true }))
-    @Query('address') address: string,
-    pageOptionsDto: TeamsPageOptionsDto,
-  ): Promise<PageDto<TeamDto>> {
-    return this.teamService.getTeams(address, pageOptionsDto);
+    @Query('address') address: string
+  ): Promise<TeamEntity[]> {
+    return this.teamService.getTeams(address);
   }
 
   @Get(':id')

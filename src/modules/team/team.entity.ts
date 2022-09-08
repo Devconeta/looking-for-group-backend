@@ -35,6 +35,9 @@ export class TeamEntity
   @Column({ nullable: false, default: false })
   isPublic: boolean;
 
+  @Column({ nullable: false, default: false })
+  distribution: boolean;
+
   @Column({ nullable: true })
   avatar?: string;
 }

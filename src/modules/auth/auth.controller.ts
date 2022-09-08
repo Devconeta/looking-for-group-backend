@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
-import { RoleType } from '../../constants';
 import { ApiFile, Auth, AuthUser } from '../../decorators';
 import { IFile } from '../../interfaces';
 import { UserDto } from '../user/dtos/user.dto';
@@ -27,7 +26,7 @@ export class AuthController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -41,8 +40,7 @@ export class AuthController {
     const userEntity = await this.authService.validateUser(userLoginDto);
 
     const token = await this.authService.createAccessToken({
-      userId: userEntity.id,
-      role: userEntity.role,
+      userId: userEntity.id
     });
 
     return new LoginPayloadDto(userEntity.toDto(), token);
@@ -51,7 +49,6 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: UserDto, description: 'Successfully Registered' })
-  @ApiFile({ name: 'avatar' })
   async userRegister(
     @Body() userRegisterDto: UserRegisterDto,
     @UploadedFile() file: IFile,
@@ -69,7 +66,7 @@ export class AuthController {
   @Version('1')
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  @Auth([RoleType.USER, RoleType.ADMIN])
+  @Auth()
   @ApiOkResponse({ type: UserDto, description: 'current user info' })
   getCurrentUser(@AuthUser() user: UserEntity): UserDto {
     return user.toDto();

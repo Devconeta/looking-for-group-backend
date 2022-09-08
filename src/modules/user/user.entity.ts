@@ -1,8 +1,10 @@
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm';
+
+import { TeamEntity } from '../../modules/team/team.entity';
 
 import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
-import { RoleType } from '../../constants';
+import { SeniorityType } from '../../constants';
 import { UseDto, VirtualColumn } from '../../decorators';
 import { PostEntity } from '../post/post.entity';
 import type { UserDtoOptions } from './dtos/user.dto';
@@ -11,23 +13,19 @@ import type { IUserSettingsEntity } from './user-settings.entity';
 import { UserSettingsEntity } from './user-settings.entity';
 
 export interface IUserEntity extends IAbstractEntity<UserDto> {
-  wallet?: string;
+  address?: string;
 
-  firstName?: string;
+  name?: string;
 
-  lastName?: string;
-
-  role: RoleType;
+  level?: SeniorityType;
 
   email?: string;
 
   password?: string;
 
-  phone?: string;
-
   avatar?: string;
 
-  fullName?: string;
+  timezone?: string;
 
   settings?: IUserSettingsEntity;
 }
@@ -38,16 +36,10 @@ export class UserEntity
   extends AbstractEntity<UserDto, UserDtoOptions>
   implements IUserEntity {
   @Column({ nullable: true })
-  wallet?: string;
+  address?: string;
 
   @Column({ nullable: true })
-  firstName?: string;
-
-  @Column({ nullable: true })
-  lastName?: string;
-
-  @Column({ type: 'enum', enum: RoleType, default: RoleType.USER })
-  role: RoleType;
+  name?: string;
 
   @Column({ unique: true, nullable: true })
   email?: string;
@@ -56,17 +48,17 @@ export class UserEntity
   password?: string;
 
   @Column({ nullable: true })
-  phone?: string;
-
-  @Column({ nullable: true })
   avatar?: string;
 
-  @VirtualColumn()
-  fullName?: string;
+  @Column({ nullable: true })
+  timezone?: string;
+
+  @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
+  level: SeniorityType;
 
   @OneToOne(() => UserSettingsEntity, (userSettings) => userSettings.user)
   settings?: UserSettingsEntity;
 
-  @OneToMany(() => PostEntity, (postEntity) => postEntity.user)
-  posts: PostEntity[];
+  @ManyToMany(() => TeamEntity, (postEntity) => postEntity.members)
+  teams: TeamEntity[];
 }

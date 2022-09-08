@@ -6,7 +6,6 @@ import path from 'path';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
-import { PostModule } from './modules/post/post.module';
 import { TeamModule } from './modules/team/team.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
@@ -19,7 +18,6 @@ import './boilerplate.polyfill';
     AuthModule,
     UserModule,
     TeamModule,
-    PostModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

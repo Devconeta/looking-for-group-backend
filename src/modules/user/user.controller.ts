@@ -1,15 +1,7 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Query,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
-import { RoleType } from '../../constants';
 import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
 import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service';
 import { TranslationService } from '../../shared/services/translation.service';
@@ -24,10 +16,10 @@ export class UserController {
   constructor(
     private userService: UserService,
     private readonly translationService: TranslationService,
-  ) {}
+  ) { }
 
   @Get('admin')
-  @Auth([RoleType.USER])
+  @Auth()
   @HttpCode(HttpStatus.OK)
   @UseLanguageInterceptor()
   async admin(@AuthUser() user: UserEntity) {
@@ -36,12 +28,12 @@ export class UserController {
     );
 
     return {
-      text: `${translation} ${user.firstName}`,
+      text: `${translation} ${user.name}`,
     };
   }
 
   @Get()
-  @Auth([RoleType.USER])
+  @Auth()
   @HttpCode(HttpStatus.OK)
   @ApiPageOkResponse({
     description: 'Get users list',
@@ -55,7 +47,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @Auth([RoleType.USER])
+  @Auth()
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,

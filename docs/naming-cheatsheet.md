@@ -154,12 +154,6 @@ The verb part of your function name. The most important part responsible for des
 
 Accesses data immediately (i.e. shorthand getter of internal data).
 
-```js
-function getUserFullName() {
-  return this.firstName + ' ' + this.lastName;
-}
-```
-
 > See also [compose](#compose).
 
 ### `set`
