@@ -3,7 +3,6 @@
     "env": {
         "NODE_ENV": "@NODE_ENV",
         "PORT": "@PORT",
-        "TRANSPORT_PORT": "@TRANSPORT_PORT",
         "JWT_EXPIRATION_TIME": "@JWT_EXPIRATION_TIME",
         "FALLBACK_LANGUAGE": "@FALLBACK_LANGUAGE",
         "ENABLE_ORM_LOGS": "@ENABLE_ORM_LOGS",
@@ -16,13 +15,7 @@
         "DB_PORT": "@DB_PORT",
         "DB_USERNAME": "@DB_USERNAME",
         "DB_PASSWORD": "@DB_PASSWORD",
-        "DB_DATABASE": "@DB_DATABASE",
-        "NATS_ENABLED": "@NATS_ENABLED",
-        "NATS_HOST": "@NATS_HOST",
-        "NATS_PORT": "@NATS_PORT",
-        "REDIS_CACHE_ENABLED": "@REDIS_CACHE_ENABLED",
-        "REDIS_HOST": "@REDIS_HOST",
-        "REDIS_PORT": "@REDIS_PORT"
+        "DB_DATABASE": "@DB_DATABASE"
     },
     "github": {
       "enabled": false
