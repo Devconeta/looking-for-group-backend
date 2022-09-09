@@ -1,22 +1,5 @@
 {
     "version": 2,
-    "env": {
-        "NODE_ENV": "@NODE_ENV",
-        "PORT": "@PORT",
-        "JWT_EXPIRATION_TIME": "@JWT_EXPIRATION_TIME",
-        "FALLBACK_LANGUAGE": "@FALLBACK_LANGUAGE",
-        "ENABLE_ORM_LOGS": "@ENABLE_ORM_LOGS",
-        "ENABLE_DOCUMENTATION": "@ENABLE_DOCUMENTATION",
-        "API_VERSION": "@API_VERSION",
-        "JWT_PRIVATE_KEY": "@JWT_PRIVATE_KEY",
-        "JWT_PUBLIC_KEY": "@JWT_PUBLIC_KEY",
-        "DB_TYPE": "@DB_TYPE",
-        "DB_HOST": "@DB_HOST",
-        "DB_PORT": "@DB_PORT",
-        "DB_USERNAME": "@DB_USERNAME",
-        "DB_PASSWORD": "@DB_PASSWORD",
-        "DB_DATABASE": "@DB_DATABASE"
-    },
     "github": {
       "enabled": false
     },
