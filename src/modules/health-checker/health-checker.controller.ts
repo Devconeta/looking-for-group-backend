@@ -20,7 +20,7 @@ export class HealthCheckerController {
     @HealthCheck()
     async check(): Promise<HealthCheckResult> {
         return this.healthCheckService.check([
-            () => this.ormIndicator.pingCheck('databasee', { timeout: 1500 }),
+            () => this.ormIndicator.pingCheck('database', { timeout: 1500 }),
             () => this.serviceIndicator.isHealthy('search-service-health'),
         ]);
     }
