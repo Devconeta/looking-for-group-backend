@@ -7,10 +7,12 @@ import {
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import express from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import compression from 'compression';
 import { middleware as expressCtx } from 'express-ctx';
 import rateLimit from 'express-rate-limit';
+import { existsSync, readFileSync } from 'fs';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import {
@@ -27,7 +29,11 @@ import { ApiConfigService } from './shared/services/api-config.service';
 import { TranslationService } from './shared/services/translation.service';
 import { SharedModule } from './shared/shared.module';
 
+import * as http from 'http';
+import * as https from 'https';
+
 export async function bootstrap(): Promise<NestExpressApplication> {
+  const server = express();
   initializeTransactionalContext();
   patchTypeORMRepositoryWithBaseRepository();
   const app = await NestFactory.create<NestExpressApplication>(
@@ -99,10 +105,24 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     app.enableShutdownHooks();
   }
 
-  const port = configService.appConfig.port;
-  await app.listen(port);
+  await app.init();
 
-  console.info(`server running on ${await app.getUrl()}`);
+  const crPath = '/etc/letsencrypt/live/mechabrawlers.com/fullchain.pem';
+  const pkPath = '/etc/letsencrypt/live/mechabrawlers.com/privkey.pem';
+
+  if (existsSync(crPath) && existsSync(pkPath)) {
+
+    https.createServer({
+      key: readFileSync(pkPath),
+      cert: readFileSync(crPath)
+    }, server).listen(3443);
+  }
+
+  const port = configService.appConfig.port;
+  http.createServer(server).listen(port);
+
+
+  console.info(`server running on port ${port}`);
 
   return app;
 }
