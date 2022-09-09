@@ -1,12 +1,11 @@
-import { Column, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToOne } from 'typeorm';
 
 import { TeamEntity } from '../../modules/team/team.entity';
 
 import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { SeniorityType } from '../../constants';
-import { UseDto, VirtualColumn } from '../../decorators';
-import { PostEntity } from '../post/post.entity';
+import { UseDto } from '../../decorators';
 import type { UserDtoOptions } from './dtos/user.dto';
 import { UserDto } from './dtos/user.dto';
 import type { IUserSettingsEntity } from './user-settings.entity';
@@ -36,7 +35,7 @@ export class UserEntity
   extends AbstractEntity<UserDto, UserDtoOptions>
   implements IUserEntity {
   @Column({ nullable: true })
-  address?: string;
+  address: string;
 
   @Column({ nullable: true })
   name?: string;

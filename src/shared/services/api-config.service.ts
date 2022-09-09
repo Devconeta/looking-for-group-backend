@@ -3,13 +3,14 @@ import { ConfigService } from '@nestjs/config';
 
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isNil } from 'lodash';
+import { TeamSubscriber } from '../../modules/team/subscriber/team.subscriber';
 
 import { UserSubscriber } from '../../entity-subscribers/user-subscriber';
 import { SnakeNamingStrategy } from '../../snake-naming.strategy';
 
 @Injectable()
 export class ApiConfigService {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService) { }
 
   get isDevelopment(): boolean {
     return this.nodeEnv === 'development';
@@ -94,7 +95,7 @@ export class ApiConfigService {
       entities,
       migrations,
       keepConnectionAlive: !this.isTest,
-      dropSchema: this.isDevelopment,
+      dropSchema: this.isDevelopment && false,
       type: 'postgres',
       name: 'default',
       host: this.getString('DB_HOST'),
@@ -102,7 +103,7 @@ export class ApiConfigService {
       username: this.getString('DB_USERNAME'),
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
-      subscribers: [UserSubscriber],
+      subscribers: [UserSubscriber, TeamSubscriber],
       migrationsRun: !this.isDevelopment,
       synchronize: this.isDevelopment,
       logging: this.getBoolean('ENABLE_ORM_LOGS'),

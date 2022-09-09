@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { UserEntity } from 'modules/user/user.entity';
 import { Column } from 'typeorm';
+
+import { UserEntity } from 'modules/user/user.entity';
 
 import { Trim } from '../../../decorators/transform.decorators';
 
@@ -33,5 +34,5 @@ export class TeamCreateDto {
   @IsOptional()
   readonly isPublic: boolean;
 
-  readonly members: UserEntity[];
+  members: UserEntity[];
 }

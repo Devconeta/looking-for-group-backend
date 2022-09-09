@@ -4,13 +4,16 @@ import { UserEntity } from '../../modules/user/user.entity';
 
 import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
-import { UseDto } from '../../decorators';
+import { UseDto, VirtualColumn } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
+import { AssetDistributionMethods } from '../../constants';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   name: string;
 
   description?: string;
+
+  distribution?: AssetDistributionMethods;
 
   isPublic: boolean;
 
@@ -35,9 +38,12 @@ export class TeamEntity
   @Column({ nullable: false, default: false })
   isPublic: boolean;
 
-  @Column({ nullable: false, default: false })
-  distribution: boolean;
+  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
+  distribution: AssetDistributionMethods;
 
   @Column({ nullable: true })
   avatar?: string;
+
+  @Column({ nullable: true })
+  code?: string
 }

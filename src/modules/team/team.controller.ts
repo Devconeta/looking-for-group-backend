@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
@@ -25,6 +25,28 @@ export class TeamController {
   })
   createTeam(@Body() teamPostDto: TeamCreateDto): Promise<TeamDto> {
     return this.teamService.createTeam(teamPostDto)
+  }
+
+  @Post('join')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Create new team',
+    type: TeamDto,
+  })
+  joinTeam(@Body() body: { address: string, code: string }): Promise<TeamDto | null> {
+    return this.teamService.joinTeam(body.address, body.code)
+  }
+
+  @Put()
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Update a team\'s data',
+    type: TeamDto,
+  })
+  updateTeam(@Body() teamDto: TeamDto): Promise<TeamDto | null> {
+    return this.teamService.updateTeam(teamDto)
   }
 
   @Get()

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
@@ -32,8 +32,19 @@ export class UserController {
     };
   }
 
+  @Put()
+  @HttpCode(HttpStatus.OK)
+  @ApiPageOkResponse({
+    description: 'Update a user',
+    type: PageDto,
+  })
+  updateUser(
+    @Body() userDto: UserDto,
+  ): Promise<UserEntity | null> {
+    return this.userService.updateUser(userDto);
+  }
+
   @Get()
-  @Auth()
   @HttpCode(HttpStatus.OK)
   @ApiPageOkResponse({
     description: 'Get users list',
@@ -46,15 +57,14 @@ export class UserController {
     return this.userService.getUsers(pageOptionsDto);
   }
 
-  @Get(':id')
-  @Auth()
+  @Get(':address')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get users list',
     type: UserDto,
   })
-  getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
-    return this.userService.getUser(userId);
+  getUser(@Param('address') address: string): Promise<UserDto> {
+    return this.userService.getOrCreateUser(address);
   }
 }

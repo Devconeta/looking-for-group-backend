@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { UserEntity } from '../../modules/user/user.entity';
 
 import type { FindOptionsWhere, Repository } from 'typeorm';
@@ -30,7 +31,7 @@ export class TeamService {
   @Transactional()
   async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
     const user = await this.userService.findOne({ address: teamRegisterDto.address })
-    user && teamRegisterDto.members.push(user)
+    user && (teamRegisterDto.members = [user])
 
     const team = this.teamRepository.create(teamRegisterDto);
 
@@ -39,10 +40,32 @@ export class TeamService {
     return team;
   }
 
+  @Transactional()
+  async updateTeam(teamDto: TeamDto): Promise<TeamEntity | null> {
+    this.teamRepository.update({ id: (teamDto.id as any) }, teamDto);
+
+    return this.teamRepository.findOne({ where: { id: teamDto.id as any } });
+  }
+
+
+  async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
+    const user = await this.userService.findOne({ address })
+    const team = await this.teamRepository.findOne({ where: { code } });
+
+    if (team) {
+      user && (team.members ? team.members.push(user) : team.members = [user])
+      this.teamRepository.save(team)
+    }
+
+    return team;
+  }
+
+
   async getTeams(address: string): Promise<TeamEntity[]> {
     const queryBuilder = this.teamRepository
       .createQueryBuilder('team')
       .innerJoinAndSelect("team.members", "member")
+      .where("member.address = :address", { address })
 
     return queryBuilder.getMany();
   }

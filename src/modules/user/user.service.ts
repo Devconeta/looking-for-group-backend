@@ -12,7 +12,7 @@ import { ValidatorService } from '../../shared/services/validator.service';
 import { UserRegisterDto } from '../auth/dto/UserRegisterDto';
 import { CreateSettingsCommand } from './commands/create-settings.command';
 import { CreateSettingsDto } from './dtos/create-settings.dto';
-import type { UserDto } from './dtos/user.dto';
+import { UserDto } from './dtos/user.dto';
 import type { UsersPageOptionsDto } from './dtos/users-page-options.dto';
 import { UserEntity } from './user.entity';
 import type { UserSettingsEntity } from './user-settings.entity';
@@ -63,6 +63,15 @@ export class UserService {
   }
 
   @Transactional()
+  async updateUser(
+    userDto: UserDto
+  ): Promise<UserEntity | null> {
+    await this.userRepository.update({ address: userDto.address }, userDto);
+
+    return this.userRepository.findOne({ where: { address: userDto.address } });
+  }
+
+  @Transactional()
   async createUser(
     userRegisterDto: UserRegisterDto,
     file: IFile,
@@ -103,6 +112,20 @@ export class UserService {
 
     if (!userEntity) {
       throw new UserNotFoundException();
+    }
+
+    return userEntity.toDto();
+  }
+
+  async getOrCreateUser(address: string): Promise<UserDto> {
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+
+    queryBuilder.where('user.address = :address', { address });
+
+    const userEntity = await queryBuilder.getOne();
+
+    if (!userEntity) {
+      return this.userRepository.save(this.userRepository.create({ address }))
     }
 
     return userEntity.toDto();
