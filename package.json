@@ -1,8 +1,10 @@
 {
-  "name": "awesome-nestjs-boilerplate",
-  "version": "8.0.0",
-  "description": "Awesome NestJS Boilerplate, Typescript, Postgres, TypeORM",
-  "author": "Narek Hakobyan <narek.hakobyan.07@gmail.com>",
+  "name": "looking-for-group-backend",
+  "version": "1.0.0",
+  "description": "Looking for group backend :)",
+  "author": {
+    "name": "Devconeta"
+  },
   "private": true,
   "license": "MIT",
   "scripts": {
