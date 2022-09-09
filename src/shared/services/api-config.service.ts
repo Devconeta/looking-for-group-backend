@@ -108,6 +108,8 @@ export class ApiConfigService {
       synchronize: this.isDevelopment,
       logging: this.getBoolean('ENABLE_ORM_LOGS'),
       namingStrategy: new SnakeNamingStrategy(),
+      url: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
     };
   }
 
