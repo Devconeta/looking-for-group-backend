@@ -38,7 +38,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   patchTypeORMRepositoryWithBaseRepository();
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter(),
+    new ExpressAdapter(server),
     { cors: true },
   );
   app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
