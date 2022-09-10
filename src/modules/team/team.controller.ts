@@ -15,7 +15,6 @@ export class TeamController {
     private teamService: TeamService
   ) { }
 
-
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiResponse({

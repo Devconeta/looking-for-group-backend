@@ -1,11 +1,7 @@
-import {
-  ClassSerializerInterceptor,
-  HttpStatus,
-  UnprocessableEntityException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { ClassSerializerInterceptor, HttpStatus, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
+
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import express from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
@@ -107,8 +103,8 @@ export async function bootstrap(): Promise<NestExpressApplication> {
 
   await app.init();
 
-  const crPath = '/etc/letsencrypt/live/mechabrawlers.com/fullchain.pem';
-  const pkPath = '/etc/letsencrypt/live/mechabrawlers.com/privkey.pem';
+  const crPath = '/etc/letsencrypt/live/mechabrawlers.online/fullchain.pem';
+  const pkPath = '/etc/letsencrypt/live/mechabrawlers.online/privkey.pem';
 
   if (existsSync(crPath) && existsSync(pkPath)) {
 
