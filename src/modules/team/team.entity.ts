@@ -4,46 +4,46 @@ import { UserEntity } from '../../modules/user/user.entity';
 
 import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
-import { UseDto, VirtualColumn } from '../../decorators';
+import { UseDto } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
 import { AssetDistributionMethods } from '../../constants';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
-  name: string;
+    name: string;
 
-  description?: string;
+    description?: string;
 
-  distribution?: AssetDistributionMethods;
+    distribution?: AssetDistributionMethods;
 
-  isPublic: boolean;
+    isPublic: boolean;
 
-  avatar?: string;
+    avatar?: string;
 }
 
 @Entity({ name: 'team' })
 @UseDto(TeamDto)
 export class TeamEntity
-  extends AbstractEntity<TeamDto>
-  implements ITeamEntity {
-  @Column({ nullable: false })
-  name: string;
+    extends AbstractEntity<TeamDto>
+    implements ITeamEntity {
+    @Column({ nullable: false })
+    name: string;
 
-  @Column({ nullable: true })
-  description?: string;
+    @Column({ nullable: true })
+    description?: string;
 
-  @ManyToMany(() => UserEntity)
-  @JoinTable()
-  members: UserEntity[];
+    @ManyToMany(() => UserEntity)
+    @JoinTable()
+    members: UserEntity[];
 
-  @Column({ nullable: false, default: false })
-  isPublic: boolean;
+    @Column({ nullable: false, default: false })
+    isPublic: boolean;
 
-  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
-  distribution: AssetDistributionMethods;
+    @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
+    distribution: AssetDistributionMethods;
 
-  @Column({ nullable: true })
-  avatar?: string;
+    @Column({ nullable: true })
+    avatar?: string;
 
-  @Column({ nullable: true })
-  code?: string
+    @Column({ nullable: true })
+    code?: string
 }
