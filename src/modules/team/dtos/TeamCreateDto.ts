@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Column } from 'typeorm';
 
 import { UserEntity } from 'modules/user/user.entity';
@@ -20,7 +20,7 @@ export class TeamCreateDto {
   @IsString()
   @IsOptional()
   @Trim()
-  readonly description: string;
+  readonly idea: string;
 
   @ApiProperty()
   @IsString()
@@ -33,6 +33,12 @@ export class TeamCreateDto {
   @IsBoolean()
   @IsOptional()
   readonly isPublic: boolean;
+  
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  @Trim()
+  readonly slogan: string;
 
   members: UserEntity[];
 }

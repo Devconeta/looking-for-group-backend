@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Query, ValidationPipe } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Query } from '@nestjs/common';
+import { ApiPropertyOptional, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { ApiPageOkResponse, UUIDParam } from '../../decorators';
@@ -57,7 +57,7 @@ export class TeamController {
         type: PageDto,
     })
     getTeams(
-        @Query('address') address: string
+        @Query('address') address?: string
     ): Promise<TeamEntity[]> {
         return this.teamService.getTeams(address);
     }

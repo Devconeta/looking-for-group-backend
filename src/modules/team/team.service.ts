@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserEntity } from '../../modules/user/user.entity';
-
 import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
@@ -61,13 +59,12 @@ export class TeamService {
   }
 
 
-  async getTeams(address: string): Promise<TeamEntity[]> {
-    const queryBuilder = this.teamRepository
-      .createQueryBuilder('team')
-      .innerJoinAndSelect("team.members", "member")
-      .where("member.address = :address", { address })
+  async getTeams(address?: string): Promise<TeamEntity[]> {
+    if (address) {
+        return this.teamRepository.find({ where: { members: { address } } })
+    }
 
-    return queryBuilder.getMany();
+    return this.teamRepository.find();
   }
 
   async getTeam(teamId: Uuid): Promise<TeamDto> {

@@ -29,13 +29,13 @@ export class TeamEntity
     name: string;
 
     @Column({ nullable: true })
-    description?: string;
+    idea?: string;
 
     @ManyToMany(() => UserEntity)
     @JoinTable()
     members: UserEntity[];
 
-    @Column({ nullable: false, default: false })
+    @Column({ default: false })
     isPublic: boolean;
 
     @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
@@ -46,4 +46,16 @@ export class TeamEntity
 
     @Column({ nullable: true })
     code?: string
+
+    @Column({ default: 5 })
+    maxMembers?: number
+
+    @Column({ nullable: true })
+    contractAddress?: string
+
+    @Column({ default: false })
+    isContractDeployed: boolean
+
+    @Column({ nullable: true })
+    slogan?: string
 }

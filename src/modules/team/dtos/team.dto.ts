@@ -8,32 +8,51 @@ import { UserEntity } from '../../../modules/user/user.entity';
 import type { TeamEntity } from '../team.entity';
 
 export class TeamDto extends AbstractDto {
-  @ApiProperty()
-  name: string;
+    @ApiProperty()
+    name: string;
 
-  @ApiPropertyOptional()
-  description?: string;
+    @ApiPropertyOptional()
+    idea?: string;
 
-  @ManyToMany(() => UserEntity)
-  @JoinTable()
-  members: UserEntity[];
+    @ManyToMany(() => UserEntity)
+    @JoinTable()
+    members: UserEntity[];
 
-  @ApiPropertyOptional()
-  avatar?: string;
+    @ApiPropertyOptional()
+    avatar?: string;
 
-  @ApiProperty({ default: false })
-  isPublic: boolean;
+    @ApiProperty({ default: false })
+    isPublic: boolean;
 
-  @ApiPropertyOptional({ enum: AssetDistributionMethods })
-  distribution?: AssetDistributionMethods;
+    @ApiPropertyOptional({ enum: AssetDistributionMethods })
+    distribution?: AssetDistributionMethods;
 
-  constructor(team: TeamEntity) {
-    super(team);
-    this.name = team.name;
-    this.description = team.description;
-    this.members = team.members;
-    this.distribution = team.distribution;
-    this.isPublic = team.isPublic;
-    this.avatar = team.avatar;
-  }
+    @ApiPropertyOptional()
+    maxMembers?: number;
+
+    @ApiPropertyOptional()
+    contractAddress?: string;
+
+    @ApiPropertyOptional()
+    isContractDeployed?: boolean;
+
+    @ApiPropertyOptional()
+    code?: string;
+
+    @ApiPropertyOptional()
+    slogan?: string;
+
+    constructor(team: TeamEntity) {
+        super(team);
+        this.name = team.name;
+        this.idea = team.idea;
+        this.members = team.members;
+        this.distribution = team.distribution;
+        this.isPublic = team.isPublic;
+        this.avatar = team.avatar;
+        this.maxMembers = team.maxMembers;
+        this.contractAddress = team.contractAddress;
+        this.isContractDeployed = team.isContractDeployed;
+        this.code = team.code;
+    }
 }
