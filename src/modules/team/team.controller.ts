@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Query } from '@nestjs/common';
-import { ApiPropertyOptional, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiPropertyOptional, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { ApiPageOkResponse, UUIDParam } from '../../decorators';
@@ -56,6 +56,12 @@ export class TeamController {
         description: 'Get teams list',
         type: PageDto,
     })
+    @ApiQuery({
+        name: "address",
+        type: String,
+        description: "User address. Optional",
+        required: false
+      })
     getTeams(
         @Query('address') address?: string
     ): Promise<TeamEntity[]> {
