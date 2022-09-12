@@ -4,11 +4,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
-import { TeamNotFoundException } from '../../exceptions';
+import { TeamNotFoundException, UserAlreadyAMember, UserAlreadyAMemberException, UserNotFoundException } from '../../exceptions';
 import type { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamEntity } from './team.entity';
 import { UserService } from '../../modules/user/user.service';
+import { TeamsPageOptionsDto } from './dtos/teams-page-options.dto';
 
 @Injectable()
 export class TeamService {
@@ -57,10 +58,20 @@ export class TeamService {
       throw new TeamNotFoundException();
 
     const user = await this.userService.findOne({ address })
-    user && (team.members ? team.members.push(user) : team.members = [user])
-    this.teamRepository.save(team)
 
-    return team;
+    if (!user)
+      throw new UserNotFoundException();
+
+    if (team.members) {
+      if (team.members.includes(user))
+        throw new UserAlreadyAMemberException();
+      else
+        team.members.push(user)
+    } else {
+      team.members = [user]
+    }
+
+    return this.teamRepository.save(team);
   }
 
   async getTeams(address?: string): Promise<TeamEntity[]> {
