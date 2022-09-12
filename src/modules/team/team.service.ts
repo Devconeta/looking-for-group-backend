@@ -78,7 +78,7 @@ export class TeamService {
     if (address) {
       //TODO: Crear un exists
       const teams = await this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
-      return this.teamRepository.find({ where: { id: In(teams.map(t => t.id)) } })
+      return this.teamRepository.find({ where: { id: In(teams.map(t => t.id)) }, relations: ['members'] })
     }
 
     return this.teamRepository.find({ relations: ['members'] });
