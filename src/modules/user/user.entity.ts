@@ -1,40 +1,20 @@
-import { Column, Entity, ManyToMany, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 
 import { TeamEntity } from '../../modules/team/team.entity';
 
-import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { SeniorityType } from '../../constants';
 import { UseDto } from '../../decorators';
 import type { UserDtoOptions } from './dtos/user.dto';
 import { UserDto } from './dtos/user.dto';
-import type { IUserSettingsEntity } from './user-settings.entity';
-import { UserSettingsEntity } from './user-settings.entity';
-
-export interface IUserEntity extends IAbstractEntity<UserDto> {
-  address?: string;
-
-  name?: string;
-
-  level?: SeniorityType;
-
-  email?: string;
-
-  password?: string;
-
-  avatar?: string;
-
-  timezone?: string;
-
-  settings?: IUserSettingsEntity;
-}
+import { UserRole } from '../../constants/user-role';
+import { UserTeamSettingsEntity } from './user-team-settings.entity';
 
 @Entity({ name: 'user' })
 @UseDto(UserDto)
 export class UserEntity
-  extends AbstractEntity<UserDto, UserDtoOptions>
-  implements IUserEntity {
-  @Column({ nullable: true })
+  extends AbstractEntity<UserDto, UserDtoOptions> {
+  @Column({ nullable: true, unique: true })
   address: string;
 
   @Column({ nullable: true })
@@ -53,11 +33,17 @@ export class UserEntity
   timezone?: string;
 
   @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
-  level: SeniorityType;
+  level?: SeniorityType;
 
-  @OneToOne(() => UserSettingsEntity, (userSettings) => userSettings.user)
-  settings?: UserSettingsEntity;
+  @Column({ nullable: true, type: 'simple-array' })
+  socialLinks?: string[];
 
-  @ManyToMany(() => TeamEntity, (postEntity) => postEntity.members)
+  @Column({ nullable: true, type: 'enum', enum: UserRole })
+  role?: UserRole;
+
+  @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.members)
   teams: TeamEntity[];
+
+  @OneToMany( () => UserTeamSettingsEntity, (userTeamSettingsEntity) => userTeamSettingsEntity.user)
+  userTeamSettings: UserTeamSettingsEntity[];
 }

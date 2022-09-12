@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UserEntity } from '../../modules/user/user.entity';
-
 import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
@@ -44,9 +42,8 @@ export class TeamService {
   async updateTeam(teamDto: TeamDto): Promise<TeamEntity | null> {
     this.teamRepository.update({ id: (teamDto.id as any) }, teamDto);
 
-    return this.teamRepository.findOne({ where: { id: teamDto.id as any } });
+    return this.teamRepository.findOne({ where: { id: teamDto.id as any }, relations: ['members'] });
   }
-
 
   async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
     const user = await this.userService.findOne({ address })
@@ -60,27 +57,11 @@ export class TeamService {
     return team;
   }
 
-
-  async getTeams(address: string): Promise<TeamEntity[]> {
-    const queryBuilder = this.teamRepository
-      .createQueryBuilder('team')
-      .innerJoinAndSelect("team.members", "member")
-      .where("member.address = :address", { address })
-
-    return queryBuilder.getMany();
-  }
-
-  async getTeam(teamId: Uuid): Promise<TeamDto> {
-    const queryBuilder = this.teamRepository.createQueryBuilder('team');
-
-    queryBuilder.where('team.id = :teamId', { teamId });
-
-    const teamEntity = await queryBuilder.getOne();
-
-    if (!teamEntity) {
-      throw new TeamNotFoundException();
+  async getTeams(address?: string): Promise<TeamEntity[]> {
+    if (address) {
+        return this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
     }
 
-    return teamEntity.toDto();
+    return this.teamRepository.find({relations: ['members']});
   }
 }

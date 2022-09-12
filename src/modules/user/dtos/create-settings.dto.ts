@@ -1,6 +1,0 @@
-import { BooleanFieldOptional } from '../../../decorators';
-
-export class CreateSettingsDto {
-  @BooleanFieldOptional()
-  isEmailVerified: boolean;
-}
