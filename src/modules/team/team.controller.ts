@@ -31,7 +31,7 @@ export class TeamController {
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Create new team',
+    description: 'Join a team',
     type: TeamDto,
   })
   joinTeam(@Body() body: TeamJoinDto): Promise<TeamDto | null> {
