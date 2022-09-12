@@ -25,7 +25,6 @@ export class TeamService {
     return this.teamRepository.findOneBy(findData);
   }
 
-
   @Transactional()
   async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
     const user = await this.userService.findOne({ address: teamRegisterDto.address })
@@ -40,8 +39,7 @@ export class TeamService {
 
   @Transactional()
   async updateTeam(teamDto: TeamDto): Promise<TeamEntity | null> {
-    this.teamRepository.update({ id: (teamDto.id as any) }, teamDto);
-
+    this.teamRepository.save(teamDto)
     return this.teamRepository.findOne({ where: { id: teamDto.id as any }, relations: ['members'] });
   }
 
