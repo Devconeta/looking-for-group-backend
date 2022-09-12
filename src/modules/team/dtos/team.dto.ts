@@ -1,13 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { AssetDistributionMethods } from '../../../constants';
 import { JoinTable, ManyToMany } from 'typeorm';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
+import { AssetDistributionMethods } from '../../../constants';
 import { UserEntity } from '../../../modules/user/user.entity';
 
 import type { TeamEntity } from '../team.entity';
 
 export class TeamDto extends AbstractDto {
+  @ApiProperty()
+  id: Uuid;
+
   @ApiProperty()
   name: string;
 
@@ -20,6 +23,12 @@ export class TeamDto extends AbstractDto {
 
   @ApiPropertyOptional()
   avatar?: string;
+
+  @ApiPropertyOptional()
+  idea?: string;
+
+  @ApiPropertyOptional()
+  maxMembers?: number;
 
   @ApiProperty({ default: false })
   isPublic: boolean;
