@@ -9,53 +9,58 @@ import { TeamDto } from './dtos/team.dto';
 import { AssetDistributionMethods } from '../../constants';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
-    name: string;
+  name: string;
 
-    description?: string;
+  description?: string;
 
-    distribution?: AssetDistributionMethods;
+  distribution?: AssetDistributionMethods;
 
-    isPublic: boolean;
+  isPublic: boolean;
 
-    avatar?: string;
+  address?: string;
+
+  avatar?: string;
 }
 
 @Entity({ name: 'team' })
 @UseDto(TeamDto)
 export class TeamEntity
-    extends AbstractEntity<TeamDto>
-    implements ITeamEntity {
-    @Column({ nullable: false })
-    name: string;
+  extends AbstractEntity<TeamDto>
+  implements ITeamEntity {
+  @Column({ nullable: false })
+  name: string;
 
-    @Column({ nullable: true })
-    idea?: string;
+  @Column({ nullable: true })
+  idea?: string;
 
-    @ManyToMany(() => UserEntity)
-    @JoinTable()
-    members: UserEntity[];
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  members: UserEntity[];
 
-    @Column({ default: false })
-    isPublic: boolean;
+  @Column({ default: false })
+  isPublic: boolean;
 
-    @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
-    distribution: AssetDistributionMethods;
+  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
+  distribution: AssetDistributionMethods;
 
-    @Column({ nullable: true })
-    avatar?: string;
+  @Column({ nullable: true })
+  address?: string;
 
-    @Column({ nullable: true })
-    code?: string
+  @Column({ nullable: true })
+  avatar?: string;
 
-    @Column({ default: 5 })
-    maxMembers?: number
+  @Column({ nullable: true })
+  code?: string
 
-    @Column({ nullable: true })
-    contractAddress?: string
+  @Column({ default: 5 })
+  maxMembers?: number
 
-    @Column({ default: false })
-    isContractDeployed: boolean
+  @Column({ nullable: true })
+  contractAddress?: string
 
-    @Column({ nullable: true })
-    slogan?: string
+  @Column({ default: false })
+  isContractDeployed: boolean
+
+  @Column({ nullable: true })
+  slogan?: string
 }
