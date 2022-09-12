@@ -53,7 +53,7 @@ export class TeamService {
   }
 
   async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
-    const team = await this.teamRepository.findOne({ where: { code } });
+    const team = await this.teamRepository.findOne({ where: { code }, relations: ['members'] });
     if (!team)
       throw new TeamNotFoundException();
 
