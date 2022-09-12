@@ -38,9 +38,17 @@ export class TeamService {
   }
 
   @Transactional()
-  async updateTeam(teamDto: TeamDto): Promise<TeamEntity | null> {
-    this.teamRepository.save(teamDto)
-    return this.teamRepository.findOne({ where: { id: teamDto.id as any }, relations: ['members'] });
+  async updateTeam(id: string, teamDto: TeamCreateDto): Promise<TeamEntity | null> {
+
+    const result = await this.teamRepository.createQueryBuilder()
+      .update(teamDto)
+      .where({
+        id,
+      })
+      .returning('*')
+      .execute()
+
+    return result.raw[0]
   }
 
   async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
@@ -57,9 +65,9 @@ export class TeamService {
 
   async getTeams(address?: string): Promise<TeamEntity[]> {
     if (address) {
-        return this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
+      return this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
     }
 
-    return this.teamRepository.find({relations: ['members']});
+    return this.teamRepository.find({ relations: ['members'] });
   }
 }

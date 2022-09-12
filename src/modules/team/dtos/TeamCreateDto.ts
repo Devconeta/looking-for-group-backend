@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Column } from 'typeorm';
 
@@ -7,34 +7,34 @@ import { UserEntity } from 'modules/user/user.entity';
 import { Trim } from '../../../decorators/transform.decorators';
 
 export class TeamCreateDto {
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsString()
   readonly address: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsString()
   @IsNotEmpty()
   readonly name: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   @Trim()
   readonly idea: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   @Trim()
   readonly avatar: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @Column()
   @IsBoolean()
   @IsOptional()
   readonly isPublic: boolean;
-  
-  @ApiProperty()
+
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   @Trim()
