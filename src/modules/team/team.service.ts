@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
-import type { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import { TeamNotFoundException, UserAlreadyAMemberException, UserNotFoundException } from '../../exceptions';
+
 import type { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamEntity } from './team.entity';
@@ -76,7 +76,9 @@ export class TeamService {
 
   async getTeams(address?: string): Promise<TeamEntity[]> {
     if (address) {
-      return this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
+      //TODO: Crear un exists
+      const teams = await this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
+      return this.teamRepository.find({ where: { id: In(teams.map(t => t.id)) } })
     }
 
     return this.teamRepository.find({ relations: ['members'] });
