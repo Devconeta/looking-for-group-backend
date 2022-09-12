@@ -42,9 +42,8 @@ export class TeamService {
   async updateTeam(teamDto: TeamDto): Promise<TeamEntity | null> {
     this.teamRepository.update({ id: (teamDto.id as any) }, teamDto);
 
-    return this.teamRepository.findOne({ where: { id: teamDto.id as any } });
+    return this.teamRepository.findOne({ where: { id: teamDto.id as any }, relations: ['members'] });
   }
-
 
   async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
     const user = await this.userService.findOne({ address })
@@ -58,26 +57,11 @@ export class TeamService {
     return team;
   }
 
-
   async getTeams(address?: string): Promise<TeamEntity[]> {
     if (address) {
-        return this.teamRepository.find({ where: { members: { address } } })
+        return this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
     }
 
-    return this.teamRepository.find();
-  }
-
-  async getTeam(teamId: Uuid): Promise<TeamDto> {
-    const queryBuilder = this.teamRepository.createQueryBuilder('team');
-
-    queryBuilder.where('team.id = :teamId', { teamId });
-
-    const teamEntity = await queryBuilder.getOne();
-
-    if (!teamEntity) {
-      throw new TeamNotFoundException();
-    }
-
-    return teamEntity.toDto();
+    return this.teamRepository.find({relations: ['members']});
   }
 }

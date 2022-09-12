@@ -67,15 +67,4 @@ export class TeamController {
     ): Promise<TeamEntity[]> {
         return this.teamService.getTeams(address);
     }
-
-    @Get(':id')
-    @HttpCode(HttpStatus.OK)
-    @ApiResponse({
-        status: HttpStatus.OK,
-        description: 'Get teams list',
-        type: TeamDto,
-    })
-    getTeam(@UUIDParam('id') teamId: Uuid): Promise<TeamDto> {
-        return this.teamService.getTeam(teamId);
-    }
 }
