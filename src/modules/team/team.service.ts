@@ -63,7 +63,7 @@ export class TeamService {
       throw new UserNotFoundException();
 
     if (team.members) {
-      if (team.members.includes(user))
+      if (team.members.map(u => u.address).includes(user.address))
         throw new UserAlreadyAMemberException();
       else
         team.members.push(user)
