@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
-import { TeamNotFoundException, UserAlreadyAMember, UserAlreadyAMemberException, UserNotFoundException } from '../../exceptions';
+import { TeamNotFoundException, UserAlreadyAMemberException, UserNotFoundException } from '../../exceptions';
 import type { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamEntity } from './team.entity';
