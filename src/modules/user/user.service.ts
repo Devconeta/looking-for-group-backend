@@ -12,6 +12,7 @@ import { UserDto } from './dtos/user.dto';
 import type { UsersPageOptionsDto } from './dtos/users-page-options.dto';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserCreateDto } from './dtos/UserCreateDto';
 
 @Injectable()
 export class UserService {
@@ -31,7 +32,7 @@ export class UserService {
   @Transactional()
   async updateUser(
     address: string,
-    userDto: UserDto
+    userDto: UserCreateDto
   ): Promise<UserEntity | null> {
     await this.userRepository.update({ address }, userDto);
     return this.userRepository.findOne({ where: { address } });

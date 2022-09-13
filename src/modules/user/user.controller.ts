@@ -7,6 +7,7 @@ import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
 import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service';
 import { TranslationService } from '../../shared/services/translation.service';
 import { UserDto } from './dtos/user.dto';
+import { UserCreateDto } from './dtos/UserCreateDto';
 import { UsersPageOptionsDto } from './dtos/users-page-options.dto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -41,7 +42,7 @@ export class UserController {
     type: UserDto,
   })
   updateUser(
-    @Param('address') address: string, @Body() userDto: UserDto
+    @Param('address') address: string, @Body() userDto: UserCreateDto
   ): Promise<UserEntity | null> {
     return this.userService.updateUser(address, userDto);
   }
