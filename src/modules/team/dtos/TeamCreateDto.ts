@@ -1,9 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Column } from 'typeorm';
 
 import { UserEntity } from 'modules/user/user.entity';
 
+import { TeamTags } from '../../../constants';
 import { Trim } from '../../../decorators/transform.decorators';
 
 export class TeamCreateDto {
@@ -45,6 +46,11 @@ export class TeamCreateDto {
   @IsOptional()
   @Trim()
   readonly slogan: string;
+
+  @ApiPropertyOptional({ enum: TeamTags, isArray: true, type: Array })
+  @IsOptional()
+  @IsArray()
+  readonly tags?: TeamTags[];
 
   members: UserEntity[];
 }
