@@ -58,6 +58,16 @@ export class UserController {
     return this.userService.getUsers(pageOptionsDto);
   }
 
+  @Get('roles')
+  @HttpCode(HttpStatus.OK)
+  @ApiPageOkResponse({
+    description: 'Get user roles list',
+    type: Array<string>,
+  })
+  getRoles(): string[] {
+    return Object.keys(UserRole);
+  }
+
   @Get(':address')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
@@ -67,15 +77,5 @@ export class UserController {
   })
   getUser(@Param('address') address: string): Promise<UserDto> {
     return this.userService.getOrCreateUser(address);
-  }
-
-  @Get('roles')
-  @HttpCode(HttpStatus.OK)
-  @ApiPageOkResponse({
-    description: 'Get user roles list',
-    type: Array<string>,
-  })
-  getRoles(): string[] {
-    return Object.keys(UserRole);
   }
 }
