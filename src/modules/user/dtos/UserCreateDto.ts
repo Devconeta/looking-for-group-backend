@@ -29,9 +29,9 @@ export class UserCreateDto {
   @ApiPropertyOptional({ enum: SeniorityType })
   readonly level: SeniorityType;
 
-  @ApiPropertyOptional({ enum: UserRole })
+  @ApiPropertyOptional({ enum: UserRole, isArray: true, type: Array })
   readonly roles?: UserRole[];
 
-  @ApiPropertyOptional({ enum: TeamTags })
+  @ApiPropertyOptional({ enum: TeamTags, isArray: true, type: Array })
   readonly tags?: TeamTags[];
 }
