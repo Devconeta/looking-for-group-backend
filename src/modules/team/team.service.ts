@@ -4,12 +4,9 @@ import { FindOptionsWhere, In, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import { TeamNotFoundException, UserAlreadyAMemberException, UserNotFoundException } from '../../exceptions';
-
-import type { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamEntity } from './team.entity';
 import { UserService } from '../../modules/user/user.service';
-import { TeamsPageOptionsDto } from './dtos/teams-page-options.dto';
 
 @Injectable()
 export class TeamService {

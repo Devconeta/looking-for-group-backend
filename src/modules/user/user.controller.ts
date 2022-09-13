@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserRole } from 'constants/user-role';
+import { UserRole } from '../../constants/user-role';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';

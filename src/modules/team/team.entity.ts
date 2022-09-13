@@ -6,8 +6,7 @@ import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { UseDto } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
-import { AssetDistributionMethods, TeamTags } from '../../constants';
-import { UserRole } from 'constants/user-role';
+import { AssetDistributionMethods, TeamTags, UserRole } from '../../constants';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   name: string;

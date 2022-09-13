@@ -1,9 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { UserRole } from 'constants/user-role';
 import { JoinTable, ManyToMany } from 'typeorm';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
-import { AssetDistributionMethods, TeamTags } from '../../../constants';
+import { AssetDistributionMethods, TeamTags, UserRole } from '../../../constants';
 import { UserEntity } from '../../../modules/user/user.entity';
 
 import type { TeamEntity } from '../team.entity';

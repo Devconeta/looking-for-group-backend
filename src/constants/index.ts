@@ -4,3 +4,4 @@ export * from './seniority-type';
 export * from './token-type';
 export * from './asset-distribution';
 export * from './team-tags';
+export * from './user-role'
