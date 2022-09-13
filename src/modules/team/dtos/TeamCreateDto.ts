@@ -34,7 +34,7 @@ export class TeamCreateDto {
   @IsNumber()
   @Max(8)
   @Min(1)
-  readonly maxMembers: string;
+  readonly maxMembers: number;
 
   @ApiPropertyOptional()
   @Column()
