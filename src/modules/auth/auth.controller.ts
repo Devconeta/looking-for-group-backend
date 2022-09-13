@@ -37,29 +37,29 @@ export class AuthController {
   //   return new LoginPayloadDto(userEntity.toDto(), token);
   // }
 
-  @Post('register')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({ type: UserDto, description: 'Successfully Registered' })
-  async userRegister(
-    @Body() userRegisterDto: UserRegisterDto,
-    @UploadedFile() file: IFile,
-  ): Promise<UserDto> {
-    const createdUser = await this.userService.createUser(
-      userRegisterDto,
-      file,
-    );
+  // @Post('register')
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOkResponse({ type: UserDto, description: 'Successfully Registered' })
+  // async userRegister(
+  //   @Body() userRegisterDto: UserRegisterDto,
+  //   @UploadedFile() file: IFile,
+  // ): Promise<UserDto> {
+  //   const createdUser = await this.userService.createUser(
+  //     userRegisterDto,
+  //     file,
+  //   );
 
-    return createdUser.toDto({
-      isActive: true,
-    });
-  }
+  //   return createdUser.toDto({
+  //     isActive: true,
+  //   });
+  // }
 
-  @Version('1')
-  @Get('me')
-  @HttpCode(HttpStatus.OK)
-  @Auth()
-  @ApiOkResponse({ type: UserDto, description: 'current user info' })
-  getCurrentUser(@AuthUser() user: UserEntity): UserDto {
-    return user.toDto();
-  }
+  // @Version('1')
+  // @Get('me')
+  // @HttpCode(HttpStatus.OK)
+  // @Auth()
+  // @ApiOkResponse({ type: UserDto, description: 'current user info' })
+  // getCurrentUser(@AuthUser() user: UserEntity): UserDto {
+  //   return user.toDto();
+  // }
 }
