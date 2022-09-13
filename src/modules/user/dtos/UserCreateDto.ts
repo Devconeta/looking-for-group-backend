@@ -22,6 +22,7 @@ export class UserCreateDto {
   readonly email: string;
 
   @ApiPropertyOptional()
+  @IsOptional()
   @IsString()
   readonly timezone: string;
 
