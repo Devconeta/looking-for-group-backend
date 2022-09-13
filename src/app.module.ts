@@ -1,15 +1,16 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { I18nModule } from 'nestjs-i18n';
-import path from 'path';
-
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
 import { TeamModule } from './modules/team/team.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { I18nModule } from 'nestjs-i18n';
+import path from 'path';
+
+import { IPFSClientService } from 'shared/services/ipfs.service';
 
 import './boilerplate.polyfill';
 
@@ -39,7 +40,8 @@ import './boilerplate.polyfill';
       imports: [SharedModule],
       inject: [ApiConfigService],
     }),
-    HealthCheckerModule
+    HealthCheckerModule,
+    IPFSClientService
   ],
   providers: [],
 })
