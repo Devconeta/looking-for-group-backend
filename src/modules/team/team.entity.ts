@@ -6,7 +6,7 @@ import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { UseDto } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
-import { AssetDistributionMethods } from '../../constants';
+import { AssetDistributionMethods, TeamTags } from '../../constants';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   name: string;
@@ -22,6 +22,8 @@ export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   avatar?: string;
 
   isContractDeployed?: boolean;
+
+  tags?: TeamTags[];
 
   slogan?: string;
 }
@@ -44,7 +46,7 @@ export class TeamEntity
   @Column({ default: false })
   isPublic: boolean;
 
-  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
+  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: [] })
   distribution: AssetDistributionMethods;
 
   @Column({ nullable: true })
@@ -61,6 +63,9 @@ export class TeamEntity
 
   @Column({ nullable: true })
   contractAddress?: string
+
+  @Column({ nullable: true, type: 'enum', enum: TeamTags, default: [] })
+  tags?: TeamTags[];
 
   @Column({ default: false })
   isContractDeployed: boolean

@@ -1,5 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiPropertyOptional, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { TeamTags } from 'constants';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { ApiPageOkResponse, UUIDParam } from '../../decorators';
@@ -65,5 +66,15 @@ export class TeamController {
     @Query('address') address?: string
   ): Promise<TeamEntity[]> {
     return this.teamService.getTeams(address);
+  }
+
+  @Get('tags')
+  @HttpCode(HttpStatus.OK)
+  @ApiPageOkResponse({
+    description: 'Get teams tags list',
+    type: PageDto,
+  })
+  getTeamTags(): TeamTags[] {
+    return TeamTags.values;
   }
 }

@@ -2,57 +2,61 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { JoinTable, ManyToMany } from 'typeorm';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
-import { AssetDistributionMethods } from '../../../constants';
+import { AssetDistributionMethods, TeamTags } from '../../../constants';
 import { UserEntity } from '../../../modules/user/user.entity';
 
 import type { TeamEntity } from '../team.entity';
 
 export class TeamDto extends AbstractDto {
-    @ApiProperty()
-    name: string;
+  @ApiProperty()
+  name: string;
 
-    @ApiPropertyOptional()
-    idea?: string;
+  @ApiPropertyOptional()
+  idea?: string;
 
-    @ManyToMany(() => UserEntity)
-    @JoinTable()
-    members: UserEntity[];
+  @ManyToMany(() => UserEntity)
+  @JoinTable()
+  members: UserEntity[];
 
-    @ApiPropertyOptional()
-    avatar?: string;
+  @ApiPropertyOptional()
+  avatar?: string;
 
-    @ApiProperty({ default: false })
-    isPublic: boolean;
+  @ApiProperty({ default: false })
+  isPublic: boolean;
 
-    @ApiPropertyOptional({ enum: AssetDistributionMethods })
-    distribution?: AssetDistributionMethods;
+  @ApiPropertyOptional({ enum: AssetDistributionMethods })
+  distribution?: AssetDistributionMethods;
 
-    @ApiPropertyOptional()
-    maxMembers?: number;
+  @ApiPropertyOptional()
+  maxMembers?: number;
 
-    @ApiPropertyOptional()
-    contractAddress?: string;
+  @ApiPropertyOptional()
+  contractAddress?: string;
 
-    @ApiPropertyOptional()
-    isContractDeployed?: boolean;
+  @ApiPropertyOptional()
+  isContractDeployed?: boolean;
 
-    @ApiPropertyOptional()
-    code?: string;
+  @ApiPropertyOptional()
+  code?: string;
 
-    @ApiPropertyOptional()
-    slogan?: string;
+  @ApiPropertyOptional({ enum: TeamTags })
+  tags?: TeamTags[];
 
-    constructor(team: TeamEntity) {
-        super(team);
-        this.name = team.name;
-        this.idea = team.idea;
-        this.members = team.members;
-        this.distribution = team.distribution;
-        this.isPublic = team.isPublic;
-        this.avatar = team.avatar;
-        this.maxMembers = team.maxMembers;
-        this.contractAddress = team.contractAddress;
-        this.isContractDeployed = team.isContractDeployed;
-        this.code = team.code;
-    }
+  @ApiPropertyOptional()
+  slogan?: string;
+
+  constructor(team: TeamEntity) {
+    super(team);
+    this.name = team.name;
+    this.idea = team.idea;
+    this.members = team.members;
+    this.distribution = team.distribution;
+    this.isPublic = team.isPublic;
+    this.avatar = team.avatar;
+    this.maxMembers = team.maxMembers;
+    this.contractAddress = team.contractAddress;
+    this.tags = team.tags;
+    this.isContractDeployed = team.isContractDeployed;
+    this.code = team.code;
+  }
 }
