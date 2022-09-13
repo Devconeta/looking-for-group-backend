@@ -13,7 +13,7 @@ import { UserTeamSettingsEntity } from './user-team-settings.entity';
 @Entity({ name: 'user' })
 @UseDto(UserDto)
 export class UserEntity
-  extends AbstractEntity<UserDto, UserDtoOptions> {
+  extends AbstractEntity<UserDto> {
   @Column({ nullable: true, unique: true })
   address: string;
 
