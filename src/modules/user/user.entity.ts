@@ -32,13 +32,13 @@ export class UserEntity
   @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
   level?: SeniorityType;
 
-  @Column({ nullable: true, type: 'simple-array' })
+  @Column({ nullable: true, type: 'simple-array', array: true })
   socialLinks?: string[];
 
-  @Column({ nullable: true, type: 'enum', enum: UserRole, default: null })
+  @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: null })
   roles?: UserRole[];
 
-  @Column({ nullable: true, type: 'enum', enum: TeamTags, default: null })
+  @Column({ nullable: true, type: 'enum', enum: TeamTags, array: true, default: null })
   tags?: TeamTags[];
 
   @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.members)

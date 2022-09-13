@@ -6,10 +6,10 @@ import { SeniorityType, TeamTags, UserRole } from '../../../constants';
 import { Trim } from '../../../decorators/transform.decorators';
 
 export class UserCreateDto {
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  readonly address: string;
+  // @ApiPropertyOptional()
+  // @IsOptional()
+  // @IsString()
+  // readonly address: string;
 
   @ApiPropertyOptional()
   @IsString()
