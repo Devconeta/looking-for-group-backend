@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiPropertyOptional, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TeamTags } from 'constants';
+import { TeamTags } from '../../constants';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { ApiPageOkResponse, UUIDParam } from '../../decorators';
