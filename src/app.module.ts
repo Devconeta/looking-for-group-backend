@@ -40,9 +40,11 @@ import './boilerplate.polyfill';
       imports: [SharedModule],
       inject: [ApiConfigService],
     }),
-    HealthCheckerModule,
-    IPFSClientService
+    HealthCheckerModule
   ],
-  providers: [],
+  exports: [
+    IPFSClientService],
+  providers: [
+    IPFSClientService],
 })
 export class AppModule { }
