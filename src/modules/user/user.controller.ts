@@ -39,7 +39,7 @@ export class UserController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Update a user\'s data',
-    type: UserDto,
+    type: UserEntity,
   })
   updateUser(
     @Param('address') address: string, @Body() userDto: UserCreateDto
