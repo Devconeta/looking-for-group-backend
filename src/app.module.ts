@@ -11,8 +11,6 @@ import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
 
-import { IpfsModule } from '@mfsoftworks/nestjs-ipfs';
-
 import './boilerplate.polyfill';
 
 @Module({
@@ -24,7 +22,6 @@ import './boilerplate.polyfill';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    IpfsModule.register(),
     TypeOrmModule.forRootAsync({
       imports: [SharedModule],
       useFactory: (configService: ApiConfigService) =>
