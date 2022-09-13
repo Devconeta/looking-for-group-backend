@@ -30,11 +30,11 @@ export class UserService {
 
   @Transactional()
   async updateUser(
+    address: string,
     userDto: UserDto
   ): Promise<UserEntity | null> {
-    await this.userRepository.update({ address: userDto.address }, userDto);
-
-    return this.userRepository.findOne({ where: { address: userDto.address } });
+    await this.userRepository.update({ address }, userDto);
+    return this.userRepository.findOne({ where: { address } });
   }
 
   @Transactional()
@@ -55,25 +55,25 @@ export class UserService {
 
   async getUsers(
     pageOptionsDto: UsersPageOptionsDto,
-  ): Promise<PageDto<UserEntity>> {  
+  ): Promise<PageDto<UserEntity>> {
     const [users, total] = await this.userRepository.findAndCount({
       skip: pageOptionsDto.skip,
       take: pageOptionsDto.take,
     });
 
     return {
-        data: users,
-        meta: {
-            page: pageOptionsDto.page,
-            pageCount: Math.ceil(total / pageOptionsDto.take),
-            itemCount: users.length,
-            hasPreviousPage: pageOptionsDto.page > 1,
-            hasNextPage: pageOptionsDto.page < Math.ceil(total / pageOptionsDto.take),
-            take: pageOptionsDto.take,
-        },
+      data: users,
+      meta: {
+        page: pageOptionsDto.page,
+        pageCount: Math.ceil(total / pageOptionsDto.take),
+        itemCount: users.length,
+        hasPreviousPage: pageOptionsDto.page > 1,
+        hasNextPage: pageOptionsDto.page < Math.ceil(total / pageOptionsDto.take),
+        take: pageOptionsDto.take,
+      },
     }
-}
-  
+  }
+
 
   async getOrCreateUser(address: string): Promise<UserDto> {
     const user = await this.userRepository.findOne({ where: { address } });
