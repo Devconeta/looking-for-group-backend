@@ -70,11 +70,11 @@ export class TeamEntity
   @Column({ nullable: true })
   contractAddress?: string
 
-  @Column({ nullable: true, type: 'enum', enum: TeamTags, default: null })
-  tags?: TeamTags[];
-
-  @Column({ nullable: true, type: 'enum', enum: UserRole, default: null })
+  @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: "{}" })
   lookingFor?: UserRole[];
+
+  @Column({ nullable: true, type: 'enum', enum: TeamTags, array: true, default: "{}" })
+  tags?: TeamTags[];
 
   @Column({ default: false })
   isContractDeployed: boolean
