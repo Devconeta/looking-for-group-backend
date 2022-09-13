@@ -46,7 +46,7 @@ export class TeamEntity
   @Column({ default: false })
   isPublic: boolean;
 
-  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: [] })
+  @Column({ nullable: true, type: 'enum', enum: AssetDistributionMethods, default: null })
   distribution: AssetDistributionMethods;
 
   @Column({ nullable: true })
@@ -64,7 +64,7 @@ export class TeamEntity
   @Column({ nullable: true })
   contractAddress?: string
 
-  @Column({ nullable: true, type: 'enum', enum: TeamTags, default: [] })
+  @Column({ nullable: true, type: 'enum', enum: TeamTags, default: null })
   tags?: TeamTags[];
 
   @Column({ default: false })
