@@ -36,6 +36,11 @@ export class TeamCreateDto {
   readonly isPublic: boolean;
 
   @ApiPropertyOptional()
+  @IsBoolean()
+  @IsOptional()
+  readonly isContractDeployed: boolean;
+
+  @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   @Trim()

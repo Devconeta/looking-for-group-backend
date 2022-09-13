@@ -20,6 +20,10 @@ export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   address?: string;
 
   avatar?: string;
+
+  isContractDeployed?: boolean;
+
+  slogan?: string;
 }
 
 @Entity({ name: 'team' })
