@@ -17,14 +17,12 @@ export class UserCreateDto {
   readonly name: string;
 
   @ApiPropertyOptional()
-  @IsEmail()
   @IsOptional()
   @Trim()
   readonly email: string;
 
   @ApiPropertyOptional()
   @IsString()
-  @IsNotEmpty()
   readonly timezone: string;
 
   @ApiPropertyOptional({ enum: SeniorityType })
