@@ -23,12 +23,12 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
     }
   }
 
-  beforeUpdate(event: UpdateEvent<UserEntity>): void {
-    // FIXME check event.databaseEntity.password
-    const entity = event.entity as UserEntity;
+  async beforeUpdate(event: UpdateEvent<UserEntity>): Promise<void> {
+    if (!event.entity)
+      return;
 
-    // if (entity.password !== event.databaseEntity.password) {
-    //   entity.password = generateHash(entity.password!);
-    // }
+    if (event.entity.avatar) {
+      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+    }
   }
 }
