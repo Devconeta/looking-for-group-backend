@@ -14,9 +14,9 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
   }
 
   beforeInsert(event: InsertEvent<UserEntity>): void {
-    // if (event.entity.password) {
-    //   event.entity.password = generateHash(event.entity.password);
-    // }
+    if (event.entity.avatar) {
+      event.entity.password = generateHash(event.entity.password);
+    }
   }
 
   beforeUpdate(event: UpdateEvent<UserEntity>): void {
