@@ -4,10 +4,7 @@ import { fromString } from 'uint8arrays/from-string'
 
 @Injectable()
 export class IPFSClientService {
-  private client = create({
-    protocol: 'http',
-    port: 5001
-  });
+  private client = create();
 
   public async upload(base64_string: string): Promise<string> {
     const data = fromString(base64_string, 'base64')
