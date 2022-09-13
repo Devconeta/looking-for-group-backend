@@ -48,20 +48,20 @@ export class AuthService {
     });
   }
 
-  async validateUser(userLoginDto: UserLoginDto): Promise<UserEntity> {
-    const user = await this.userService.findOne({
-      email: userLoginDto.email,
-    });
+  // async validateUser(userLoginDto: UserLoginDto): Promise<UserEntity> {
+  //   const user = await this.userService.findOne({
+  //     email: userLoginDto.email,
+  //   });
 
-    const isPasswordValid = await validateHash(
-      userLoginDto.password,
-      user?.password,
-    );
+  //   const isPasswordValid = await validateHash(
+  //     userLoginDto.password,
+  //     user?.password,
+  //   );
 
-    if (!isPasswordValid) {
-      throw new UserNotFoundException();
-    }
+  //   if (!isPasswordValid) {
+  //     throw new UserNotFoundException();
+  //   }
 
-    return user!;
-  }
+  //   return user!;
+  // }
 }

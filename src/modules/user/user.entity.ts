@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm';
-
-import { TeamEntity } from '../../modules/team/team.entity';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
-import { SeniorityType } from '../../constants';
+import { SeniorityType, TeamTags } from '../../constants';
 import { UseDto } from '../../decorators';
+import { TeamEntity } from '../../modules/team/team.entity';
+
 import type { UserDtoOptions } from './dtos/user.dto';
 import { UserDto } from './dtos/user.dto';
 import { UserRole } from '../../constants/user-role';
@@ -24,9 +24,6 @@ export class UserEntity
   email?: string;
 
   @Column({ nullable: true })
-  password?: string;
-
-  @Column({ nullable: true })
   avatar?: string;
 
   @Column({ nullable: true })
@@ -38,12 +35,15 @@ export class UserEntity
   @Column({ nullable: true, type: 'simple-array' })
   socialLinks?: string[];
 
-  @Column({ nullable: true, type: 'enum', enum: UserRole })
-  role?: UserRole;
+  @Column({ nullable: true, type: 'enum', enum: UserRole, default: null })
+  roles?: UserRole[];
+
+  @Column({ nullable: true, type: 'enum', enum: TeamTags, default: null })
+  tags?: TeamTags[];
 
   @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.members)
   teams: TeamEntity[];
 
-  @OneToMany( () => UserTeamSettingsEntity, (userTeamSettingsEntity) => userTeamSettingsEntity.user)
+  @OneToMany(() => UserTeamSettingsEntity, (userTeamSettingsEntity) => userTeamSettingsEntity.user)
   userTeamSettings: UserTeamSettingsEntity[];
 }

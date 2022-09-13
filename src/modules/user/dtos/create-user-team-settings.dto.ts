@@ -1,13 +1,14 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
+
 import { UserRole } from '../../../constants/user-role';
-import { BooleanFieldOptional, EnumFieldOptional } from '../../../decorators';
+import { BooleanFieldOptional } from '../../../decorators';
 
 export class CreateUserTeamSettingsDto {
   @BooleanFieldOptional()
   isEmailVerified: boolean;
 
   @ApiPropertyOptional({ enum: UserRole })
-  role?: UserRole;
+  lookingFor?: UserRole[];
 
   @ApiPropertyOptional()
   percentage?: number;

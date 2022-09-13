@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserRole } from '../../constants/user-role';
 
 import { PageDto } from '../../common/dto/page.dto';
+import { UserRole } from '../../constants/user-role';
 import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
 import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service';
 import { TranslationService } from '../../shared/services/translation.service';
@@ -33,14 +33,15 @@ export class UserController {
     };
   }
 
-  @Put()
+  @Put(':address')
   @HttpCode(HttpStatus.OK)
-  @ApiPageOkResponse({
-    description: 'Update a user',
-    type: PageDto,
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Update a user\'s data',
+    type: UserDto,
   })
   updateUser(
-    @Body() userDto: UserDto,
+    @Param('id') id: string, @Body() userDto: UserDto
   ): Promise<UserEntity | null> {
     return this.userService.updateUser(userDto);
   }

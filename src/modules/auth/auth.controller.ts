@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UploadedFile,
-  Version,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UploadedFile, Version } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { ApiFile, Auth, AuthUser } from '../../decorators';
@@ -28,23 +19,23 @@ export class AuthController {
     private authService: AuthService,
   ) { }
 
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({
-    type: LoginPayloadDto,
-    description: 'User info with access token',
-  })
-  async userLogin(
-    @Body() userLoginDto: UserLoginDto,
-  ): Promise<LoginPayloadDto> {
-    const userEntity = await this.authService.validateUser(userLoginDto);
+  // @Post('login')
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOkResponse({
+  //   type: LoginPayloadDto,
+  //   description: 'User info with access token',
+  // })
+  // async userLogin(
+  //   @Body() userLoginDto: UserLoginDto,
+  // ): Promise<LoginPayloadDto> {
+  //   const userEntity = await this.authService.validateUser(userLoginDto);
 
-    const token = await this.authService.createAccessToken({
-      userId: userEntity.id
-    });
+  //   const token = await this.authService.createAccessToken({
+  //     userId: userEntity.id
+  //   });
 
-    return new LoginPayloadDto(userEntity.toDto(), token);
-  }
+  //   return new LoginPayloadDto(userEntity.toDto(), token);
+  // }
 
   @Post('register')
   @HttpCode(HttpStatus.OK)
