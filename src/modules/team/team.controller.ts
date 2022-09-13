@@ -74,7 +74,7 @@ export class TeamController {
     description: 'Get teams tags list',
     type: PageDto,
   })
-  getTeamTags(): TeamTags[] {
-    return TeamTags.values;
+  getTeamTags(): string[] {
+    return Object.keys(TeamTags);
   }
 }
