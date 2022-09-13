@@ -67,7 +67,7 @@ export class UserController {
     type: Array<string>,
   })
   getRoles(): string[] {
-    return Object.keys(UserRole);
+    return Object.values(UserRole);
   }
 
   @Get(':address')

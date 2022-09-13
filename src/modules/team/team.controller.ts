@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiPropertyOptional, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TeamTags } from '../../constants';
 
 import { PageDto } from '../../common/dto/page.dto';
+import { TeamTags } from '../../constants';
 import { ApiPageOkResponse, UUIDParam } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
 import { TeamCreateDto } from './dtos/TeamCreateDto';
@@ -75,6 +75,6 @@ export class TeamController {
     type: PageDto,
   })
   getTeamTags(): string[] {
-    return Object.keys(TeamTags);
+    return Object.values(TeamTags);
   }
 }
