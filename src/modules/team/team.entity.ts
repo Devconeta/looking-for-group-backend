@@ -19,6 +19,10 @@ export interface ITeamEntity extends IAbstractEntity<TeamDto> {
 
   address?: string;
 
+  code?: string;
+
+  maxMembers?: number;
+
   avatar?: string;
 
   isContractDeployed?: boolean;
