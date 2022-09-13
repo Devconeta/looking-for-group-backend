@@ -7,6 +7,7 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { UseDto } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
 import { AssetDistributionMethods, TeamTags } from '../../constants';
+import { UserRole } from 'constants/user-role';
 
 export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   name: string;
@@ -22,6 +23,8 @@ export interface ITeamEntity extends IAbstractEntity<TeamDto> {
   avatar?: string;
 
   isContractDeployed?: boolean;
+
+  lookingFor?: UserRole[];
 
   tags?: TeamTags[];
 
@@ -66,6 +69,9 @@ export class TeamEntity
 
   @Column({ nullable: true, type: 'enum', enum: TeamTags, default: null })
   tags?: TeamTags[];
+
+  @Column({ nullable: true, type: 'enum', enum: UserRole, default: null })
+  lookingFor?: UserRole[];
 
   @Column({ default: false })
   isContractDeployed: boolean

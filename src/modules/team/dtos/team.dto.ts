@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { UserRole } from 'constants/user-role';
 import { JoinTable, ManyToMany } from 'typeorm';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
@@ -42,6 +43,9 @@ export class TeamDto extends AbstractDto {
   @ApiPropertyOptional({ enum: TeamTags })
   tags?: TeamTags[];
 
+  @ApiPropertyOptional({ enum: UserRole })
+  lookingFor?: UserRole[];
+
   @ApiPropertyOptional()
   slogan?: string;
 
@@ -56,6 +60,7 @@ export class TeamDto extends AbstractDto {
     this.maxMembers = team.maxMembers;
     this.contractAddress = team.contractAddress;
     this.tags = team.tags;
+    this.lookingFor = team.lookingFor;
     this.isContractDeployed = team.isContractDeployed;
     this.code = team.code;
   }

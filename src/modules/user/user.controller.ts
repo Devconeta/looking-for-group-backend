@@ -1,5 +1,6 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Put, Query, ValidationPipe } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserRole } from 'constants/user-role';
 
 import { PageDto } from '../../common/dto/page.dto';
 import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
@@ -66,5 +67,15 @@ export class UserController {
   })
   getUser(@Param('address') address: string): Promise<UserDto> {
     return this.userService.getOrCreateUser(address);
+  }
+
+  @Get('roles')
+  @HttpCode(HttpStatus.OK)
+  @ApiPageOkResponse({
+    description: 'Get user roles list',
+    type: Array<string>,
+  })
+  getRoles(): string[] {
+    return Object.keys(UserRole);
   }
 }

@@ -12,7 +12,6 @@ export enum TeamTags {
   "Social Network" = "Social Network",
   "Zero Knowledge" = "Zero Knowledge",
   "Metaverse" = "Metaverse",
-  "Other" = "Other",
   "Smart Contracts" = "Smart Contracts",
   "Beginner Friendly" = "Beginner Friendly",
   "Experienced" = "Experienced",
