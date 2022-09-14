@@ -11,6 +11,6 @@ import { UserService } from './user.service';
   imports: [TypeOrmModule.forFeature([UserEntity, UserTeamSettingsEntity])],
   controllers: [UserController],
   exports: [UserService, IPFSClientService],
-  providers: [UserService, UserSubscriber, IPFSClientService],
+  providers: [UserService, IPFSClientService],
 })
 export class UserModule { }

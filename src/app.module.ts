@@ -12,7 +12,6 @@ import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
 
 import './boilerplate.polyfill';
-import { IPFSClientService } from './shared/services/ipfs.service';
 
 @Module({
   imports: [
