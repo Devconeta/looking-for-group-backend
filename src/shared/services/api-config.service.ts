@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { create } from 'ipfs-http-client';
+import { fromString } from 'uint8arrays/from-string'
 
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isNil } from 'lodash';
@@ -10,7 +12,15 @@ import { SnakeNamingStrategy } from '../../snake-naming.strategy';
 
 @Injectable()
 export class ApiConfigService {
+  private client = create();
+
   constructor(private configService: ConfigService) { }
+
+  public async upload(base64_string: string): Promise<string> {
+    const data = fromString(base64_string, 'base64')
+    const { cid } = await this.client.add(data)
+    return `https://cloudflare-ipfs.com/ipfs/${cid}`
+  }
 
   get isDevelopment(): boolean {
     return this.nodeEnv === 'development';
