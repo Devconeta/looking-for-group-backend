@@ -23,6 +23,10 @@ export class UserCreateDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  readonly avatar: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsString()
   readonly timezone: string;
 
