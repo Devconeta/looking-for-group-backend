@@ -7,7 +7,7 @@ import { EventSubscriber } from 'typeorm';
 
 import { UserEntity } from '../modules/user/user.entity';
 import { Injectable } from '@nestjs/common';
-import { ApiConfigService } from 'shared/services/api-config.service';
+import { ApiConfigService } from '../shared/services/api-config.service';
 
 @Injectable()
 @EventSubscriber()
