@@ -1,3 +1,4 @@
+import { IPFSClientService } from '../shared/services/ipfs.service';
 import type {
   EntitySubscriberInterface,
   InsertEvent,
@@ -6,13 +7,9 @@ import type {
 import { EventSubscriber } from 'typeorm';
 
 import { UserEntity } from '../modules/user/user.entity';
-import { Injectable } from '@nestjs/common';
-import { ApiConfigService } from '../shared/services/api-config.service';
-
-@Injectable()
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
-  constructor(private apiConfig: ApiConfigService) { }
+  constructor(private readonly ipfs: IPFSClientService) { }
 
   listenTo(): typeof UserEntity {
     return UserEntity;
@@ -20,7 +17,7 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
 
   async beforeInsert(event: InsertEvent<UserEntity>): Promise<void> {
     if (event.entity.avatar) {
-      event.entity.avatar = await this.apiConfig.upload(event.entity.avatar);
+      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
     }
   }
 
@@ -29,7 +26,7 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
       return;
 
     if (event.entity.avatar) {
-      event.entity.avatar = await this.apiConfig.upload(event.entity.avatar);
+      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
     }
   }
 }

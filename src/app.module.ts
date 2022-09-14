@@ -12,6 +12,7 @@ import { ApiConfigService } from './shared/services/api-config.service';
 import { SharedModule } from './shared/shared.module';
 
 import './boilerplate.polyfill';
+import { IPFSClientService } from './shared/services/ipfs.service';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import './boilerplate.polyfill';
       imports: [SharedModule],
       useFactory: (configService: ApiConfigService) =>
         configService.postgresConfig,
-      inject: [ApiConfigService],
+      inject: [ApiConfigService]
     }),
     I18nModule.forRootAsync({
       useFactory: (configService: ApiConfigService) => ({
