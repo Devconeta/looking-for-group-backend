@@ -9,7 +9,6 @@ import { HealthCheckerModule } from './modules/health-checker/health-checker.mod
 import { TeamModule } from './modules/team/team.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
-import { IPFSClientService } from './shared/services/ipfs.service';
 import { SharedModule } from './shared/shared.module';
 
 import './boilerplate.polyfill';

@@ -1,5 +1,3 @@
-import { IPFSClientService } from '../shared/services/ipfs.service';
-
 import type {
   EntitySubscriberInterface,
   InsertEvent,
