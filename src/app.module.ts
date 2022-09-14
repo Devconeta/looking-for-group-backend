@@ -42,9 +42,7 @@ import './boilerplate.polyfill';
     }),
     HealthCheckerModule
   ],
-  exports: [
-    IPFSClientService],
-  providers: [
-    IPFSClientService],
+  exports: [],
+  providers: [],
 })
 export class AppModule { }
