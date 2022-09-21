@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ApiServicesModule } from 'api-services/api-services.module';
-
+import { ApiServicesModule } from '../../api-services/api-services.module';
 import { UserTeamSettingsEntity } from './user-team-settings.entity';
 import { UserController } from './user.controller';
 import { UserEntity } from './user.entity';
