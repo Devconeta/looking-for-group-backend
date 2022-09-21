@@ -23,7 +23,11 @@ export class UserCreateDto {
 
   @ApiPropertyOptional()
   @IsOptional()
-  readonly avatar: string;
+  avatar: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  cover: string;
 
   @ApiPropertyOptional()
   @IsOptional()

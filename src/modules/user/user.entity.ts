@@ -27,6 +27,9 @@ export class UserEntity
   avatar?: string;
 
   @Column({ nullable: true })
+  cover?: string;
+
+  @Column({ nullable: true })
   timezone?: string;
 
   @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })

@@ -21,8 +21,15 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
   }
 
   async beforeInsert(event: InsertEvent<UserEntity>): Promise<void> {
+    if (!event.entity)
+      return;
+
     if (event.entity.avatar) {
       event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+    }
+
+    if (event.entity.cover) {
+      event.entity.cover = await this.ipfs.upload(event.entity.cover);
     }
   }
 
@@ -32,6 +39,10 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
 
     if (event.entity.avatar) {
       event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+    }
+
+    if (event.entity.cover) {
+      event.entity.cover = await this.ipfs.upload(event.entity.cover);
     }
   }
 }

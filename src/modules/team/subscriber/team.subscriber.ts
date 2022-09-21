@@ -1,8 +1,14 @@
-import { EntitySubscriberInterface, EventSubscriber, InsertEvent } from "typeorm";
+import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from "typeorm";
+
+import { IPFSClientService } from "../../../shared/services/ipfs.service";
 import { TeamEntity } from "../team.entity";
 
 @EventSubscriber()
 export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
+
+  constructor(private ipfs: IPFSClientService) {
+  }
+
   listenTo() {
     return TeamEntity;
   }
@@ -19,7 +25,23 @@ export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
   }
 
 
-  async beforeInsert(event: InsertEvent<TeamEntity>): Promise<any> {
+  async beforeInsert(event: InsertEvent<TeamEntity>): Promise<void> {
+    if (!event.entity)
+      return;
+
     event.entity.code = this.makeId(6)
+
+    if (event.entity.avatar) {
+      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+    }
+  }
+
+  async beforeUpdate(event: UpdateEvent<TeamEntity>): Promise<void> {
+    if (!event.entity)
+      return;
+
+    if (event.entity.avatar) {
+      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+    }
   }
 }

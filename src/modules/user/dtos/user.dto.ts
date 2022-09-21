@@ -27,6 +27,10 @@ export class UserDto extends AbstractDto {
 
   @ApiPropertyOptional()
   @IsString()
+  cover?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
   timezone?: string;
 
   @ApiPropertyOptional({ enum: SeniorityType })
@@ -48,6 +52,7 @@ export class UserDto extends AbstractDto {
     this.name = user.name;
     this.email = user.email;
     this.avatar = user.avatar;
+    this.cover = user.cover;
     this.timezone = user.timezone;
     this.level = user.level;
     this.socialLinks = user.socialLinks;

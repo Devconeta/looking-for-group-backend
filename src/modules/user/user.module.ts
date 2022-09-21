@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserSubscriber } from '../../entity-subscribers/user-subscriber';
+
 import { IPFSClientService } from '../../shared/services/ipfs.service';
 import { UserTeamSettingsEntity } from './user-team-settings.entity';
 import { UserController } from './user.controller';
