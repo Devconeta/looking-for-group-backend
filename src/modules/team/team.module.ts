@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiServicesModule } from '../../api-services/api-services.module';
 import { TeamSubscriber } from '../../entity-subscribers/team-subscriber';
 import { UserModule } from '../../modules/user/user.module';
-import { IPFSClientService } from '../../shared/services/ipfs.service';
 import { TeamController } from './team.controller';
 import { TeamEntity } from './team.entity';
 import { TeamService } from './team.service';

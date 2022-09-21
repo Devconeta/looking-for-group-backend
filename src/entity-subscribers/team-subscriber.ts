@@ -7,7 +7,7 @@ import type {
 } from 'typeorm';
 import { EventSubscriber } from 'typeorm';
 
-import { TeamEntity } from 'modules/team/team.entity';
+import { TeamEntity } from '../modules/team/team.entity';
 
 @EventSubscriber()
 export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
@@ -17,6 +17,4 @@ export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
   listenTo(): typeof TeamEntity {
     return TeamEntity;
   }
-
-
 }
