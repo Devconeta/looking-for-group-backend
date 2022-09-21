@@ -1,12 +1,21 @@
+import { create, IPFSHTTPClient } from "ipfs-http-client";
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from "typeorm";
+import { fromString } from 'uint8arrays/from-string'
 
-import { IPFSClientService } from "../../../shared/services/ipfs.service";
 import { TeamEntity } from "../team.entity";
 
 @EventSubscriber()
 export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
+  private client: IPFSHTTPClient;
 
-  constructor(private ipfs: IPFSClientService) {
+  constructor() {
+    this.client = create()
+  }
+
+  public async upload(base64_string: string): Promise<string> {
+    const data = fromString(base64_string, 'base64')
+    const { cid } = await this.client.add(data)
+    return `https://cloudflare-ipfs.com/ipfs/${cid}`
   }
 
   listenTo() {
@@ -32,7 +41,7 @@ export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
     event.entity.code = this.makeId(6)
 
     if (event.entity.avatar) {
-      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+      event.entity.avatar = await this.upload(event.entity.avatar);
     }
   }
 
@@ -41,7 +50,7 @@ export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
       return;
 
     if (event.entity.avatar) {
-      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+      event.entity.avatar = await this.upload(event.entity.avatar);
     }
   }
 }

@@ -13,7 +13,16 @@ import { fromString } from 'uint8arrays/from-string'
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
-  constructor(private ipfs: IPFSClientService) {
+  private client: IPFSHTTPClient;
+
+  constructor() {
+    this.client = create()
+  }
+
+  public async upload(base64_string: string): Promise<string> {
+    const data = fromString(base64_string, 'base64')
+    const { cid } = await this.client.add(data)
+    return `https://cloudflare-ipfs.com/ipfs/${cid}`
   }
 
   listenTo(): typeof UserEntity {
@@ -25,11 +34,11 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
       return;
 
     if (event.entity.avatar) {
-      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+      event.entity.avatar = await this.upload(event.entity.avatar);
     }
 
     if (event.entity.cover) {
-      event.entity.cover = await this.ipfs.upload(event.entity.cover);
+      event.entity.cover = await this.upload(event.entity.cover);
     }
   }
 
@@ -38,11 +47,11 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
       return;
 
     if (event.entity.avatar) {
-      event.entity.avatar = await this.ipfs.upload(event.entity.avatar);
+      event.entity.avatar = await this.upload(event.entity.avatar);
     }
 
     if (event.entity.cover) {
-      event.entity.cover = await this.ipfs.upload(event.entity.cover);
+      event.entity.cover = await this.upload(event.entity.cover);
     }
   }
 }
