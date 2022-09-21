@@ -46,6 +46,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
       max: 100, // limit each IP to 100 requests per windowMs
     }),
   );
+
   app.use(compression());
   app.use(morgan('combined'));
   app.enableVersioning();

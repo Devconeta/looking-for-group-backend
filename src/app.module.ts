@@ -9,7 +9,9 @@ import { HealthCheckerModule } from './modules/health-checker/health-checker.mod
 import { TeamModule } from './modules/team/team.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
+import { DiscordBotService } from './shared/services/discord-bot.service';
 import { SharedModule } from './shared/shared.module';
+import { ApiServicesModule } from './api-services/api-services.module';
 
 import './boilerplate.polyfill';
 
@@ -39,9 +41,10 @@ import './boilerplate.polyfill';
       imports: [SharedModule],
       inject: [ApiConfigService],
     }),
-    HealthCheckerModule
+    HealthCheckerModule,
+    ApiServicesModule,
   ],
-  exports: [],
-  providers: [],
+  exports: [DiscordBotService],
+  providers: [DiscordBotService],
 })
 export class AppModule { }

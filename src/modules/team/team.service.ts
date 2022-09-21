@@ -7,13 +7,15 @@ import { TeamNotFoundException, UserAlreadyAMemberException, UserNotFoundExcepti
 import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamEntity } from './team.entity';
 import { UserService } from '../../modules/user/user.service';
+import { DiscordBotService } from '../../shared/services/discord-bot.service';
 
 @Injectable()
 export class TeamService {
   constructor(
     @InjectRepository(TeamEntity)
     private readonly teamRepository: Repository<TeamEntity>,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private discordService: DiscordBotService
   ) { }
 
   /**
@@ -31,6 +33,9 @@ export class TeamService {
     const team = this.teamRepository.create(teamRegisterDto);
 
     await this.teamRepository.save(team);
+
+    if (team.isPublic)
+      this.discordService.createTeamChannels(team)
 
     return team;
   }

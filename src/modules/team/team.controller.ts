@@ -7,7 +7,7 @@ import { TeamJoinDto } from './dtos/TeamJoinDto';
 import { TeamEntity } from './team.entity';
 import { TeamService } from './team.service';
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
-import { ApiPropertyOptional, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('teams')
 @ApiTags('teams')
