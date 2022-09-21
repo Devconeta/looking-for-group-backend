@@ -4,14 +4,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { I18nModule } from 'nestjs-i18n';
 import path from 'path';
 
+import { ApiServicesModule } from './api-services/api-services.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module';
 import { TeamModule } from './modules/team/team.module';
 import { UserModule } from './modules/user/user.module';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { DiscordBotService } from './shared/services/discord-bot.service';
+import { IPFSClientService } from './shared/services/ipfs.service';
 import { SharedModule } from './shared/shared.module';
-import { ApiServicesModule } from './api-services/api-services.module';
 
 import './boilerplate.polyfill';
 
@@ -44,7 +45,7 @@ import './boilerplate.polyfill';
     HealthCheckerModule,
     ApiServicesModule,
   ],
-  exports: [DiscordBotService],
-  providers: [DiscordBotService],
+  exports: [DiscordBotService, IPFSClientService],
+  providers: [DiscordBotService, IPFSClientService],
 })
 export class AppModule { }

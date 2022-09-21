@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Client, Guild, ChannelType } from 'discord.js';
+import { ChannelType, Client, Guild } from 'discord.js';
+
 import { TeamEntity } from 'modules/team/team.entity';
 
 @Injectable()
