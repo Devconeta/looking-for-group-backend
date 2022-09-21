@@ -11,7 +11,7 @@ import { TeamService } from './team.service';
 @Module({
   imports: [TypeOrmModule.forFeature([TeamEntity]), UserModule, ApiServicesModule],
   controllers: [TeamController],
-  exports: [TeamService, IPFSClientService],
-  providers: [TeamService, IPFSClientService],
+  exports: [TeamService],
+  providers: [TeamService],
 })
 export class TeamModule { }
