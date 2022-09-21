@@ -24,6 +24,7 @@ import { setupSwagger } from './setup-swagger';
 import { ApiConfigService } from './shared/services/api-config.service';
 import { TranslationService } from './shared/services/translation.service';
 import { SharedModule } from './shared/shared.module';
+import bodyParser from 'body-parser'
 
 import * as http from 'http';
 import * as https from 'https';
@@ -50,6 +51,9 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   app.use(compression());
   app.use(morgan('combined'));
   app.enableVersioning();
+
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   const reflector = app.get(Reflector);
 
