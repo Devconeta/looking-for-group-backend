@@ -29,14 +29,12 @@ export class DiscordBotService {
     if (!this.guild)
       return
 
-    const permissionOverwrites = [
-      { id: this.guild.id, deny: ['VIEW_CHANNEL'] },
-      { id: 321, allow: ['VIEW_CHANNEL'] },
-    ]
-
     const category = await this.guild.channels.create({
       name: `${team.name}`,
-      permissionOverwrites,
+      permissionOverwrites: [
+        { id: this.guild.id, deny: ['ViewChannel'] },
+        { id: "321", allow: ['ViewChannel'] },
+      ],
       type: ChannelType.GuildCategory,
       userLimit: team.maxMembers,
     })
