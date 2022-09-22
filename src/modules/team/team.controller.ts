@@ -61,10 +61,18 @@ export class TeamController {
     description: "User address. Optional",
     required: false
   })
+  @ApiQuery({
+    name: "filters",
+    isArray: true,
+    type: String,
+    description: "Filters. Optional",
+    required: false
+  })
   getTeams(
-    @Query('address') address?: string
+    @Query('address') address?: string,
+    @Query('filters') filters?: [{ tag: string, value: string }],
   ): Promise<TeamEntity[]> {
-    return this.teamService.getTeams(address);
+    return this.teamService.getTeams(address, filters);
   }
 
   @Get('tags')

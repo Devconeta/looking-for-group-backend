@@ -11,78 +11,95 @@ import { DiscordBotService } from '../../shared/services/discord-bot.service';
 
 @Injectable()
 export class TeamService {
-  constructor(
-    @InjectRepository(TeamEntity)
-    private readonly teamRepository: Repository<TeamEntity>,
-    private readonly userService: UserService,
-    private discordService: DiscordBotService
-  ) { }
+    constructor(
+        @InjectRepository(TeamEntity)
+        private readonly teamRepository: Repository<TeamEntity>,
+        private readonly userService: UserService,
+        private discordService: DiscordBotService
+    ) { }
 
-  /**
-   * Find single team
-   */
-  findOne(findData: FindOptionsWhere<TeamEntity>): Promise<TeamEntity | null> {
-    return this.teamRepository.findOneBy(findData);
-  }
-
-  @Transactional()
-  async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
-    const user = await this.userService.findOne({ address: teamRegisterDto.address })
-    user && (teamRegisterDto.members = [user])
-
-    const team = this.teamRepository.create(teamRegisterDto);
-
-    await this.teamRepository.save(team);
-
-    if (team.isPublic)
-      this.discordService.createTeamChannels(team)
-
-    return team;
-  }
-
-  @Transactional()
-  async updateTeam(id: string, teamDto: TeamCreateDto): Promise<TeamEntity | null> {
-
-    const result = await this.teamRepository.createQueryBuilder()
-      .update(teamDto)
-      .where({
-        id,
-      })
-      .returning('*')
-      .execute()
-
-    return result.raw[0]
-  }
-
-  async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
-    const team = await this.teamRepository.findOne({ where: { code }, relations: ['members'] });
-    if (!team)
-      throw new TeamNotFoundException();
-
-    const user = await this.userService.findOne({ address })
-
-    if (!user)
-      throw new UserNotFoundException();
-
-    if (team.members) {
-      if (team.members.map(u => u.address).includes(user.address))
-        throw new UserAlreadyAMemberException();
-      else
-        team.members.push(user)
-    } else {
-      team.members = [user]
+    /**
+     * Find single team
+     */
+    findOne(findData: FindOptionsWhere<TeamEntity>): Promise<TeamEntity | null> {
+        return this.teamRepository.findOneBy(findData);
     }
 
-    return this.teamRepository.save(team);
-  }
+    @Transactional()
+    async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
+        const user = await this.userService.findOne({ address: teamRegisterDto.address })
+        user && (teamRegisterDto.members = [user])
 
-  async getTeams(address?: string): Promise<TeamEntity[]> {
-    if (address) {
-      //TODO: Crear un exists
-      const teams = await this.teamRepository.find({ where: { members: { address } }, relations: ['members'] })
-      return this.teamRepository.find({ where: { id: In(teams.map(t => t.id)) }, relations: ['members'] })
+        const team = this.teamRepository.create(teamRegisterDto);
+
+        await this.teamRepository.save(team);
+
+        if (team.isPublic) {
+            this.discordService.createTeamChannels(team)
+        }
+
+        return team;
     }
 
-    return this.teamRepository.find({ relations: ['members'] });
-  }
+    @Transactional()
+    async updateTeam(id: string, teamDto: TeamCreateDto): Promise<TeamEntity | null> {
+
+        const result = await this.teamRepository.createQueryBuilder()
+            .update(teamDto)
+            .where({
+                id,
+            })
+            .returning('*')
+            .execute()
+
+        return result.raw[0]
+    }
+
+    async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
+        const team = await this.teamRepository.findOne({ where: { code }, relations: ['members'] });
+        if (!team)
+            throw new TeamNotFoundException();
+
+        const user = await this.userService.findOne({ address })
+
+        if (!user)
+            throw new UserNotFoundException();
+
+        if (team.members) {
+            if (team.members.map(u => u.address).includes(user.address))
+                throw new UserAlreadyAMemberException();
+            else
+                team.members.push(user)
+        } else {
+            team.members = [user]
+        }
+
+        return this.teamRepository.save(team);
+    }
+
+    async getTeams(address?: string, filters?: [{ tag: string, value: string }]): Promise<TeamEntity[]> {
+        const options = {
+            relations: ['members'],
+        }
+
+        if (filters) {
+            options['where'] = filters;
+        }
+
+        if (address) {
+            if (options['where']) {
+
+                options['where'] = {
+                    ...options['where'][0],
+                    members: { address }
+                }
+            } else {
+                options['where'] = {
+                    members: { address }
+                }
+            }
+        }
+
+        return this.teamRepository.find(options);
+    }
 }
