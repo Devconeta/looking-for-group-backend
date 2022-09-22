@@ -35,7 +35,7 @@ export class UserEntity
   @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
   level?: SeniorityType;
 
-  @Column({ nullable: true, array: true, default: "{}" })
+  @Column({ nullable: true, type: 'simple-array', array: true, default: "{}" })
   socialLinks?: string[];
 
   @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: "{}" })
