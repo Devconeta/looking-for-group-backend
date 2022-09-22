@@ -42,7 +42,7 @@ export class UserController {
     type: UserEntity,
   })
   updateUser(
-    @Param('address') address: string, @Body() userDto: UserCreateDto
+    @Param('address') address: string, @Body() userDto: UserDto
   ): Promise<UserEntity | null> {
     return this.userService.updateUser(address, userDto);
   }

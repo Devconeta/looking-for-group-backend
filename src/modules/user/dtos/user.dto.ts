@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsString } from 'class-validator';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import { SeniorityType, TeamTags } from '../../../constants';
@@ -46,6 +46,10 @@ export class UserDto extends AbstractDto {
   @ApiPropertyOptional({ enum: TeamTags })
   tags?: TeamTags[];
 
+  @ApiPropertyOptional()
+  @IsBoolean()
+  alreadyEdited: boolean;
+
   constructor(user: UserEntity) {
     super(user);
     this.address = user.address;
@@ -58,5 +62,6 @@ export class UserDto extends AbstractDto {
     this.socialLinks = user.socialLinks;
     this.roles = user.roles;
     this.tags = user.tags;
+    this.alreadyEdited = user.alreadyEdited;
   }
 }

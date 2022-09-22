@@ -44,8 +44,14 @@ export class UserEntity
   @Column({ nullable: true, type: 'enum', enum: TeamTags, array: true, default: "{}" })
   tags?: TeamTags[];
 
+  @Column({ nullable: false, default: false })
+  alreadyEdited: boolean;
+
   @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.members)
   teams: TeamEntity[];
+
+  @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.applicants)
+  appliedTeams: TeamEntity[];
 
   @OneToMany(() => UserTeamSettingsEntity, (userTeamSettingsEntity) => userTeamSettingsEntity.user)
   userTeamSettings: UserTeamSettingsEntity[];

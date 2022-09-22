@@ -8,6 +8,7 @@ import { TeamCreateDto } from './dtos/TeamCreateDto';
 import { TeamEntity } from './team.entity';
 import { UserService } from '../../modules/user/user.service';
 import { DiscordBotService } from '../../shared/services/discord-bot.service';
+import { UserAlreadyAppliedException } from '../../exceptions/user-already-applied.exception';
 
 @Injectable()
 export class TeamService {
@@ -56,7 +57,7 @@ export class TeamService {
     }
 
     async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
-        const team = await this.teamRepository.findOne({ where: { code }, relations: ['members'] });
+        const team = await this.teamRepository.findOne({ where: { code }, relations: ['members', 'applicants'] });
         if (!team)
             throw new TeamNotFoundException();
 
@@ -77,9 +78,46 @@ export class TeamService {
         return this.teamRepository.save(team);
     }
 
+    async applyTeam(address: string, teamId: string): Promise<TeamEntity | null> {
+        const team = await this.teamRepository.findOne({ where: { id: teamId } as any, relations: ['members', 'applicants'] });
+
+        if (!team)
+            throw new TeamNotFoundException();
+
+        if (!team.isPublic)
+            throw new TeamNotFoundException();
+
+        const user = await this.userService.findOne({ address })
+
+        if (!user)
+            throw new UserNotFoundException();
+
+        if (team.members && team.members.length > 0) {
+            if (team.members.map(u => u.address).includes(user.address))
+                throw new UserAlreadyAMemberException();
+            else
+                team.applicants.push(user)
+        } else {
+            team.applicants = [user]
+        }
+
+        console.log("CUANTOS SON", team.applicants)
+        if (team.applicants && team.applicants.length > 0) {
+            if (team.applicants.map(u => u.address).includes(user.address))
+                throw new UserAlreadyAppliedException();
+            else
+                team.applicants.push(user)
+        } else {
+            team.applicants = [user]
+        }
+
+
+        return this.teamRepository.save(team);
+    }
+
     async getTeams(address?: string, filters?: [{ tag: string, value: string }]): Promise<TeamEntity[]> {
         const options = {
-            relations: ['members'],
+            relations: ['members', 'applicants'],
         }
 
         if (filters) {

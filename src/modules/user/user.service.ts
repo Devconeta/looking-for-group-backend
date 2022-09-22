@@ -4,7 +4,7 @@ import type { FindOptionsWhere, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import type { PageDto } from '../../common/dto/page.dto';
-import { FileNotImageException } from '../../exceptions';
+import { FileNotImageException, UserNotFoundException } from '../../exceptions';
 import { IFile } from '../../interfaces';
 import { ValidatorService } from '../../shared/services/validator.service';
 import { UserRegisterDto } from '../auth/dto/UserRegisterDto';
@@ -32,11 +32,20 @@ export class UserService {
   @Transactional()
   async updateUser(
     address: string,
-    userDto: UserCreateDto
+    userDto: UserDto
   ): Promise<UserEntity | null> {
-    await this.userRepository.update({ address }, userDto);
+    // still not working :/
+    
+    const user = await this.userRepository.findOne({ where: { address } });
+
+    if (!user) {
+        throw new UserNotFoundException();
+    }
+
+    await this.userRepository.update(user.id, userDto);
+
     return this.userRepository.findOne({ where: { address } });
-  }
+}
 
   @Transactional()
   async createUser(

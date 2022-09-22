@@ -2,43 +2,15 @@ import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import { UserEntity } from '../../modules/user/user.entity';
 
-import type { IAbstractEntity } from '../../common/abstract.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 import { UseDto } from '../../decorators';
 import { TeamDto } from './dtos/team.dto';
 import { AssetDistributionMethods, TeamTags, UserRole } from '../../constants';
 
-export interface ITeamEntity extends IAbstractEntity<TeamDto> {
-  name: string;
-
-  description?: string;
-
-  distribution?: AssetDistributionMethods;
-
-  isPublic: boolean;
-
-  address?: string;
-
-  code?: string;
-
-  maxMembers?: number;
-
-  avatar?: string;
-
-  isContractDeployed?: boolean;
-
-  lookingFor?: UserRole[];
-
-  tags?: TeamTags[];
-
-  slogan?: string;
-}
-
 @Entity({ name: 'team' })
 @UseDto(TeamDto)
 export class TeamEntity
-  extends AbstractEntity<TeamDto>
-  implements ITeamEntity {
+  extends AbstractEntity<TeamDto> {
   @Column({ nullable: false })
   name: string;
 
@@ -48,6 +20,10 @@ export class TeamEntity
   @ManyToMany(() => UserEntity)
   @JoinTable()
   members: UserEntity[];
+
+  @ManyToMany(() => UserEntity, (userEntity) => userEntity.appliedTeams)
+  @JoinTable()
+  applicants: UserEntity[];
 
   @Column({ default: false })
   isPublic: boolean;
