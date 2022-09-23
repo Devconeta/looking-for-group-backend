@@ -31,18 +31,22 @@ export class TeamService {
   }
 
   @Transactional()
-  async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
+  async createTeam(teamRegisterDto: TeamCreateDto): Promise<Partial<TeamEntity> & { inviteUrl: string }> {
+    let inviteUrl
+
     const user = await this.userService.findOne({ address: teamRegisterDto.address })
     user && (teamRegisterDto.members = [user])
 
     const team = this.teamRepository.create(teamRegisterDto);
     if (team.isPublic) {
-      team.discordCategoryId = await this.discordService.createTeamChannels(team)
+      const channelInfo = await this.discordService.createTeamChannels(team) as any;
+      team.discordCategoryId = channelInfo.categoryId;
+      inviteUrl = channelInfo.inviteUrl;
     }
 
     await this.teamRepository.save(team);
 
-    return team;
+    return { ...team, inviteUrl };
   }
 
   @Transactional()

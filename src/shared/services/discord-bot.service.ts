@@ -40,10 +40,9 @@ export class DiscordBotService {
     });
   }
 
-  public async createTeamChannels(team: TeamEntity): Promise<string | undefined> {
+  public async createTeamChannels(team: TeamEntity): Promise<{ inviteUrl: string, categoryId: string } | undefined> {
     if (!this.guild)
       return undefined
-
 
     const category = await this.guild.channels.create({
       name: `${team.name}`,
@@ -55,20 +54,22 @@ export class DiscordBotService {
     })
 
     this.guild.channels.create({
-      name: `${team.name} text`,
-      type: ChannelType.GuildText,
-      userLimit: team.maxMembers,
-      parent: category.id,
-    })
-
-    this.guild.channels.create({
       name: `${team.name} voice`,
       type: ChannelType.GuildVoice,
       userLimit: team.maxMembers,
       parent: category.id,
     })
 
-    return category.id
+    this.guild.channels.create({
+      name: `${team.name} text`,
+      type: ChannelType.GuildText,
+      userLimit: team.maxMembers,
+      parent: category.id,
+    }).then(channel => {
+      channel.createInvite().then(invite => {
+        return { inviteUrl: invite.url, categoryId: category.id }
+      })
+    })
   }
 
   public async notifyApplicant(team: TeamEntity, applicant: UserEntity): Promise<void> {
