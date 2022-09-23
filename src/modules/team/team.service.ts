@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, In, Like, Repository } from 'typeorm';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import { TeamNotFoundException, UserAlreadyAMemberException, UserNotFoundException } from '../../exceptions';
@@ -115,26 +115,29 @@ export class TeamService {
         return this.teamRepository.save(team);
     }
 
-    async getTeams(address?: string, filters?: [{ tag: string, value: string }]): Promise<TeamEntity[]> {
-        const options = {
-            relations: ['members', 'applicants'],
-        }
-
-        if (filters) {
-            options['where'] = filters;
-        }
+    async getTeams(address?: string, search?: string): Promise<TeamEntity[]> {
+        let options;
 
         if (address) {
-            if (options['where']) {
-
-                options['where'] = {
-                    ...options['where'][0],
-                    members: { address }
+            options = {
+                relations: ['members', 'applicants'],
+                where: {
+                    members: {
+                        address
+                    }
                 }
-            } else {
-                options['where'] = {
-                    members: { address }
-                }
+            }
+        } else if (search) {
+            options = {
+                relations: ['members', 'applicants'],
+                where: [
+                    { name: ILike(`%${search}%`) },
+                    { address: ILike(`%${search}%`) },
+                ]
+            }
+        } else {
+            options = {
+                relations: ['members', 'applicants'],
             }
         }
 
