@@ -48,7 +48,7 @@ export class UserCreateDto {
   @ApiPropertyOptional({ isArray: true, type: Array })
   @IsOptional()
   @IsArray()
-  readonly socialLinks?: SocialLink[];
+  readonly socialLinks?: Array<SocialLink>;
 
   @ApiPropertyOptional({ enum: TeamTags, isArray: true, type: Array })
   @IsOptional()
