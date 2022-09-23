@@ -3,14 +3,13 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelT
 import { UserEntity } from '../../modules/user/user.entity';
 
 import { TeamEntity } from '../../modules/team/team.entity';
-import { TeamService } from '../../modules/team/team.service';
 
 @Injectable()
 export class DiscordBotService {
   private client: Client;
   private guild: Guild | undefined;
 
-  constructor(private teamService: TeamService) {
+  constructor() {
     this.client = new Client({ intents: ['Guilds'] })
     this.setupListeners();
     this.login();
@@ -27,9 +26,9 @@ export class DiscordBotService {
     });
   }
 
-  public async createTeamChannels(team: TeamEntity): Promise<void> {
+  public async createTeamChannels(team: TeamEntity): Promise<string | undefined> {
     if (!this.guild)
-      return
+      return undefined
 
     const category = await this.guild.channels.create({
       name: `${team.name}`,
@@ -55,8 +54,7 @@ export class DiscordBotService {
       parent: category.id,
     })
 
-    team.discordCategoryId = category.id
-    this.teamService.save(team)
+    return category.id
   }
 
   public async notifyApplicant(team: TeamEntity, applicant: UserEntity): Promise<void> {

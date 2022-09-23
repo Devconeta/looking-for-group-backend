@@ -36,12 +36,11 @@ export class TeamService {
     user && (teamRegisterDto.members = [user])
 
     const team = this.teamRepository.create(teamRegisterDto);
+    if (team.isPublic) {
+      team.discordCategoryId = await this.discordService.createTeamChannels(team)
+    }
 
     await this.teamRepository.save(team);
-
-    if (team.isPublic) {
-      this.discordService.createTeamChannels(team)
-    }
 
     return team;
   }
@@ -111,7 +110,7 @@ export class TeamService {
       team.applicants = [user]
     }
 
-    this.discordService
+    this.discordService.notifyApplicant(team, user)
 
     return this.teamRepository.save(team);
   }
