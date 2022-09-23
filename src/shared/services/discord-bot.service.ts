@@ -81,6 +81,6 @@ export class DiscordBotService {
           .setStyle(ButtonStyle.Primary),
       );
 
-    await channel.send({ content: `New applicant: ${applicant.address}!`, components: [row] });
+    await channel.send({ content: `New applicant: ${applicant.address}!`, components: [(row as any)] });
   }
 }
