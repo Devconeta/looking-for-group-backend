@@ -13,46 +13,49 @@ import { UserTeamSettingsEntity } from './user-team-settings.entity';
 @Entity({ name: 'user' })
 @UseDto(UserDto)
 export class UserEntity
-  extends AbstractEntity<UserDto> {
-  @Column({ nullable: true, unique: true })
-  address: string;
+    extends AbstractEntity<UserDto> {
+    @Column({ nullable: true, unique: true })
+    address: string;
 
-  @Column({ nullable: true })
-  name?: string;
+    @Column({ nullable: true })
+    name?: string;
 
-  @Column({ unique: true, nullable: true })
-  email?: string;
+    @Column({ unique: true, nullable: true })
+    email?: string;
 
-  @Column({ nullable: true })
-  avatar?: string;
+    @Column({ nullable: true })
+    avatar?: string;
 
-  @Column({ nullable: true })
-  cover?: string;
+    @Column({ nullable: true })
+    cover?: string;
 
-  @Column({ nullable: true })
-  timezone?: string;
+    @Column({ nullable: true })
+    timezone?: string;
 
-  @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
-  level?: SeniorityType;
+    @Column({ nullable: true })
+    idea?: string;
 
-  @Column({ nullable: true, type: 'simple-array', array: true, default: "{}" })
-  socialLinks?: string[];
+    @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
+    level?: SeniorityType;
 
-  @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: "{}" })
-  roles?: UserRole[];
+    @Column({ nullable: true, type: 'simple-array', array: true, default: "{}" })
+    socialLinks?: string[];
 
-  @Column({ nullable: true, type: 'enum', enum: TeamTags, array: true, default: "{}" })
-  tags?: TeamTags[];
+    @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: "{}" })
+    roles?: UserRole[];
 
-  @Column({ nullable: false, default: false })
-  alreadyEdited: boolean;
+    @Column({ nullable: true, type: 'enum', enum: TeamTags, array: true, default: "{}" })
+    tags?: TeamTags[];
 
-  @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.members)
-  teams: TeamEntity[];
+    @Column({ nullable: false, default: false })
+    alreadyEdited: boolean;
 
-  @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.applicants)
-  appliedTeams: TeamEntity[];
+    @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.members)
+    teams: TeamEntity[];
 
-  @OneToMany(() => UserTeamSettingsEntity, (userTeamSettingsEntity) => userTeamSettingsEntity.user)
-  userTeamSettings: UserTeamSettingsEntity[];
+    @ManyToMany(() => TeamEntity, (teamEntity) => teamEntity.applicants)
+    appliedTeams: TeamEntity[];
+
+    @OneToMany(() => UserTeamSettingsEntity, (userTeamSettingsEntity) => userTeamSettingsEntity.user)
+    userTeamSettings: UserTeamSettingsEntity[];
 }
