@@ -70,17 +70,6 @@ export class UserController {
     return Object.values(UserRole);
   }
 
-  @Get(':address')
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get users list',
-    type: UserDto,
-  })
-  getUser(@Param('address') address: string): Promise<UserDto> {
-    return this.userService.getOrCreateUser(address);
-  }
-
   @Get('/timezones')
   @HttpCode(HttpStatus.OK)
   @ApiResponse({
@@ -199,5 +188,16 @@ export class UserController {
       "(UTC+13:00) Samoa"
     ];
     return timezones;
+  }
+
+  @Get(':address')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get users list',
+    type: UserDto,
+  })
+  getUser(@Param('address') address: string): Promise<UserDto> {
+    return this.userService.getOrCreateUser(address);
   }
 }
