@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { SocialLink } from '../../../interfaces/SocialLink';
 import { Column } from 'typeorm';
 
 import { SeniorityType, TeamTags, UserRole } from '../../../constants';
@@ -43,6 +44,11 @@ export class UserCreateDto {
   @IsOptional()
   @IsArray()
   readonly roles?: UserRole[];
+
+  @ApiPropertyOptional({ isArray: true, type: Array<SocialLink> })
+  @IsOptional()
+  @IsArray()
+  readonly socialLinks?: SocialLink[];
 
   @ApiPropertyOptional({ enum: TeamTags, isArray: true, type: Array })
   @IsOptional()
