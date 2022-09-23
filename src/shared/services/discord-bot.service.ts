@@ -68,8 +68,6 @@ export class DiscordBotService {
     const dataEmbed = new EmbedBuilder()
       .setColor(0x5100ff)
       .setTitle('New applicant')
-      .setDescription('Some description here')
-      .setThumbnail('https://i.imgur.com/AfFp7pu.png')
       .addFields(
         { name: 'Address', value: `${applicant.address}` },
         { name: '\u200B', value: '\u200B' },
