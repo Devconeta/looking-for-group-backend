@@ -1,4 +1,4 @@
-import { SocialLink } from '../../interfaces/SocialLink';
+import { SocialLink, defaultLinks } from '../../interfaces/SocialLink';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
@@ -34,7 +34,7 @@ export class UserEntity
   @Column({ nullable: true })
   idea?: string;
 
-  @Column({ nullable: true, type: 'jsonb', array: false, default: "{}" })
+  @Column({ nullable: true, type: 'jsonb', array: false, default: defaultLinks })
   socialLinks?: Array<SocialLink>;
 
   @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
