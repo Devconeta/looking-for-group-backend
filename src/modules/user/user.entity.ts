@@ -31,11 +31,14 @@ export class UserEntity
   @Column({ nullable: true })
   timezone?: string;
 
-  @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
-  level?: SeniorityType;
+  @Column({ nullable: true })
+  idea?: string;
 
   @Column({ nullable: true, type: 'simple-array', array: true, default: "{}" })
   socialLinks?: SocialLink[];
+
+  @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
+  level?: SeniorityType;
 
   @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: "{}" })
   roles?: UserRole[];
