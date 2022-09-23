@@ -34,7 +34,7 @@ export class DiscordBotService {
       name: `${team.name}`,
       permissionOverwrites: [
         { id: this.guild.id, deny: ['ViewChannel'] },
-        { id: "321", allow: ['ViewChannel'] },
+        { id: "913877199461949440", allow: ['ViewChannel'] },
       ],
       type: ChannelType.GuildCategory,
       userLimit: team.maxMembers,
