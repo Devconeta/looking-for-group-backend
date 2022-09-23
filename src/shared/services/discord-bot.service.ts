@@ -31,8 +31,10 @@ export class DiscordBotService {
       const [teamId, userAddress, action] = interaction.customId?.split('|') || []
 
       if (action === 'deny') {
+        await interaction.message.delete()
         await interaction.reply('Applicant rejected');
       } else if (action === 'accept') {
+        await interaction.message.delete()
         await interaction.reply('Applicant accepted!');
       }
     });
