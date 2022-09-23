@@ -98,7 +98,7 @@ export class DiscordBotService {
           "fields": [
             {
               "name": `${applicant.address}`,
-              "value": `${applicant.name ? applicant.name + "\n" : ''}${applicant.socialLinks?.length ? applicant.socialLinks.map(a => a.name + ": " + a.link).join("\n") : ''}`,
+              "value": `${applicant.name ? applicant.name + "\n" : ''}${applicant.socialLinks?.length ? applicant.socialLinks.map(a => a.name + ": " + a.link).join("\n") : ''} `,
             }
           ]
         }
