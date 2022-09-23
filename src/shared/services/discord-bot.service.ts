@@ -104,7 +104,5 @@ export class DiscordBotService {
         }
       ]
     })
-
-    await channel.send({ content: `New applicant: ${applicant.address}`, components: [(row as any)] });
   }
 }
