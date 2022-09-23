@@ -57,4 +57,7 @@ export class TeamEntity
 
   @Column({ nullable: true })
   slogan?: string
+
+  @Column({ nullable: true })
+  discordCategoryId?: string
 }

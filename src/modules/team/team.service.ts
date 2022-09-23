@@ -12,135 +12,136 @@ import { UserAlreadyAppliedException } from '../../exceptions/user-already-appli
 
 @Injectable()
 export class TeamService {
-    constructor(
-        @InjectRepository(TeamEntity)
-        private readonly teamRepository: Repository<TeamEntity>,
-        private readonly userService: UserService,
-        private discordService: DiscordBotService
-    ) { }
+  constructor(
+    @InjectRepository(TeamEntity)
+    private readonly teamRepository: Repository<TeamEntity>,
+    private readonly userService: UserService,
+    private discordService: DiscordBotService
+  ) { }
 
-    /**
-     * Find single team
-     */
-    findOne(findData: FindOptionsWhere<TeamEntity>): Promise<TeamEntity | null> {
-        return this.teamRepository.findOneBy(findData);
+  /**
+   * Find single team
+   */
+  findOne(findData: FindOptionsWhere<TeamEntity>): Promise<TeamEntity | null> {
+    return this.teamRepository.findOneBy(findData);
+  }
+
+  save(newData: TeamEntity): Promise<TeamEntity | null> {
+    return this.teamRepository.save(newData);
+  }
+
+  @Transactional()
+  async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
+    const user = await this.userService.findOne({ address: teamRegisterDto.address })
+    user && (teamRegisterDto.members = [user])
+
+    const team = this.teamRepository.create(teamRegisterDto);
+
+    await this.teamRepository.save(team);
+
+    if (team.isPublic) {
+      this.discordService.createTeamChannels(team)
     }
 
-    @Transactional()
-    async createTeam(teamRegisterDto: TeamCreateDto): Promise<TeamEntity> {
-        const user = await this.userService.findOne({ address: teamRegisterDto.address })
-        user && (teamRegisterDto.members = [user])
+    return team;
+  }
 
-        const team = this.teamRepository.create(teamRegisterDto);
+  @Transactional()
+  async updateTeam(id: string, teamDto: TeamCreateDto): Promise<TeamEntity | null> {
 
-        await this.teamRepository.save(team);
+    const result = await this.teamRepository.createQueryBuilder()
+      .update(teamDto)
+      .where({
+        id,
+      })
+      .returning('*')
+      .execute()
 
-        if (team.isPublic) {
-            this.discordService.createTeamChannels(team)
+    return result.raw[0]
+  }
+
+  async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
+    const team = await this.teamRepository.findOne({ where: { code }, relations: ['members', 'applicants'] });
+    if (!team)
+      throw new TeamNotFoundException();
+
+    const user = await this.userService.findOne({ address })
+
+    if (!user)
+      throw new UserNotFoundException();
+
+    if (team.members) {
+      if (team.members.map(u => u.address).includes(user.address))
+        throw new UserAlreadyAMemberException();
+      else
+        team.members.push(user)
+    } else {
+      team.members = [user]
+    }
+
+    return this.teamRepository.save(team);
+  }
+
+  async applyTeam(address: string, teamId: string): Promise<TeamEntity | null> {
+    const team = await this.teamRepository.findOne({ where: { id: teamId } as any, relations: ['members', 'applicants'] });
+
+    if (!team || !team.isPublic)
+      throw new TeamNotFoundException();
+
+    const user = await this.userService.findOne({ address })
+
+    if (!user)
+      throw new UserNotFoundException();
+
+    if (team.members && !team.members.length) {
+      if (team.members.map(u => u.address).includes(user.address))
+        throw new UserAlreadyAMemberException();
+      else
+        team.applicants.push(user)
+    } else {
+      team.applicants = [user]
+    }
+
+    if (team.applicants && !team.applicants.length) {
+      if (team.applicants.map(u => u.address).includes(user.address))
+        throw new UserAlreadyAppliedException();
+      else
+        team.applicants.push(user)
+    } else {
+      team.applicants = [user]
+    }
+
+    this.discordService
+
+    return this.teamRepository.save(team);
+  }
+
+  async getTeams(address?: string, search?: string): Promise<TeamEntity[]> {
+    let options;
+
+    if (address) {
+      options = {
+        relations: ['members', 'applicants'],
+        where: {
+          members: {
+            address
+          }
         }
-
-        return team;
+      }
+    } else if (search) {
+      options = {
+        relations: ['members', 'applicants'],
+        where: [
+          { name: ILike(`%${search}%`) },
+          { address: ILike(`%${search}%`) },
+        ]
+      }
+    } else {
+      options = {
+        relations: ['members', 'applicants'],
+      }
     }
 
-    @Transactional()
-    async updateTeam(id: string, teamDto: TeamCreateDto): Promise<TeamEntity | null> {
-
-        const result = await this.teamRepository.createQueryBuilder()
-            .update(teamDto)
-            .where({
-                id,
-            })
-            .returning('*')
-            .execute()
-
-        return result.raw[0]
-    }
-
-    async joinTeam(address: string, code: string): Promise<TeamEntity | null> {
-        const team = await this.teamRepository.findOne({ where: { code }, relations: ['members', 'applicants'] });
-        if (!team)
-            throw new TeamNotFoundException();
-
-        const user = await this.userService.findOne({ address })
-
-        if (!user)
-            throw new UserNotFoundException();
-
-        if (team.members) {
-            if (team.members.map(u => u.address).includes(user.address))
-                throw new UserAlreadyAMemberException();
-            else
-                team.members.push(user)
-        } else {
-            team.members = [user]
-        }
-
-        return this.teamRepository.save(team);
-    }
-
-    async applyTeam(address: string, teamId: string): Promise<TeamEntity | null> {
-        const team = await this.teamRepository.findOne({ where: { id: teamId } as any, relations: ['members', 'applicants'] });
-
-        if (!team)
-            throw new TeamNotFoundException();
-
-        if (!team.isPublic)
-            throw new TeamNotFoundException();
-
-        const user = await this.userService.findOne({ address })
-
-        if (!user)
-            throw new UserNotFoundException();
-
-        if (team.members && team.members.length > 0) {
-            if (team.members.map(u => u.address).includes(user.address))
-                throw new UserAlreadyAMemberException();
-            else
-                team.applicants.push(user)
-        } else {
-            team.applicants = [user]
-        }
-
-        console.log("CUANTOS SON", team.applicants)
-        if (team.applicants && team.applicants.length > 0) {
-            if (team.applicants.map(u => u.address).includes(user.address))
-                throw new UserAlreadyAppliedException();
-            else
-                team.applicants.push(user)
-        } else {
-            team.applicants = [user]
-        }
-
-
-        return this.teamRepository.save(team);
-    }
-
-    async getTeams(address?: string, search?: string): Promise<TeamEntity[]> {
-        let options;
-
-        if (address) {
-            options = {
-                relations: ['members', 'applicants'],
-                where: {
-                    members: {
-                        address
-                    }
-                }
-            }
-        } else if (search) {
-            options = {
-                relations: ['members', 'applicants'],
-                where: [
-                    { name: ILike(`%${search}%`) },
-                    { address: ILike(`%${search}%`) },
-                ]
-            }
-        } else {
-            options = {
-                relations: ['members', 'applicants'],
-            }
-        }
-
-        return this.teamRepository.find(options);
-    }
+    return this.teamRepository.find(options);
+  }
 }
