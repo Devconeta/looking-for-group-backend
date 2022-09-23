@@ -35,6 +35,11 @@ export class UserCreateDto {
   @IsString()
   readonly timezone: string;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  readonly idea: string;
+
   @ApiPropertyOptional({ enum: SeniorityType })
   @IsOptional()
   @IsEnum(SeniorityType)
