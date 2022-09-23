@@ -34,7 +34,7 @@ export class UserEntity
   @Column({ nullable: true })
   idea?: string;
 
-  @Column({ nullable: true, type: 'array', array: true, default: "{}" })
+  @Column({ nullable: true, type: 'simple-array', array: true, default: "{}" })
   socialLinks?: SocialLink[];
 
   @Column({ nullable: true, type: 'enum', enum: SeniorityType, default: null })
