@@ -32,20 +32,18 @@ export class UserService {
   @Transactional()
   async updateUser(
     address: string,
-    userDto: UserDto
+    userDto: UserCreateDto
   ): Promise<UserEntity | null> {
-    // still not working :/
-    
     const user = await this.userRepository.findOne({ where: { address } });
 
     if (!user) {
-        throw new UserNotFoundException();
+      throw new UserNotFoundException();
     }
 
     await this.userRepository.update(user.id, userDto);
 
     return this.userRepository.findOne({ where: { address } });
-}
+  }
 
   @Transactional()
   async createUser(
