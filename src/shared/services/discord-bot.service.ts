@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelType, Client, EmbedBuilder, EmbedType, Guild, TextChannel } from 'discord.js';
+import { ActionRowBuilder, BaseInteraction, ButtonBuilder, ButtonComponent, ButtonStyle, CategoryChannel, ChannelType, Client, EmbedBuilder, EmbedType, Guild, TextChannel } from 'discord.js';
 import { UserEntity } from '../../modules/user/user.entity';
 
 import { TeamEntity } from '../../modules/team/team.entity';
@@ -23,6 +23,18 @@ export class DiscordBotService {
     this.client.on('ready', async () => {
       console.log(`Logged in as ${this.client.user?.tag}!`);
       this.guild = this.client.guilds.cache.get(process.env.DISCORD_GUILD_ID as string)
+    });
+
+    this.client.on('interactionCreate', async (interaction: BaseInteraction) => {
+      if (!interaction.isButton()) return;
+
+      const [teamId, userAddress, action] = interaction.customId?.split('|') || []
+
+      if (action === 'deny') {
+        await interaction.reply('Applicant rejected');
+      } else if (action === 'accept') {
+        await interaction.reply('Applicant accepted!');
+      }
     });
   }
 
