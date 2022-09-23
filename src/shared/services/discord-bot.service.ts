@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelType, Client, EmbedType, Guild, TextChannel } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CategoryChannel, ChannelType, Client, EmbedBuilder, EmbedType, Guild, TextChannel } from 'discord.js';
 import { UserEntity } from '../../modules/user/user.entity';
 
 import { TeamEntity } from '../../modules/team/team.entity';
@@ -65,43 +65,44 @@ export class DiscordBotService {
 
     const channel = category.children.cache.find(channel => channel.type === ChannelType.GuildText) as TextChannel
 
+    const dataEmbed = new EmbedBuilder()
+      .setColor(0x5100ff)
+      .setTitle('New applicant')
+      .setDescription('Some description here')
+      .setThumbnail('https://i.imgur.com/AfFp7pu.png')
+      .addFields(
+        { name: 'Address', value: `${applicant.address}` },
+        { name: '\u200B', value: '\u200B' },
+        ...(applicant.name ? [{ name: 'Name', value: `${applicant.name ? applicant.name + "\n" : ''}`, inline: true }] : []),
+        ...(applicant.socialLinks?.length ? [{ name: 'Socials', value: `${applicant.socialLinks?.length ? applicant.socialLinks.map(a => a.name + ": " + a.link).join("\n") : ''}`, inline: false }] : []),
+      )
+      .setTimestamp()
+
     await channel.send({
-      "content": "",
-      "tts": false,
-      "components": [
+      content: "",
+      components: [
         {
-          "type": 1,
-          "components": [
+          type: 1,
+          components: [
             {
-              "style": 2,
-              "label": `Deny`,
-              "custom_id": `${team.id}|${applicant.address}|deny`,
-              "disabled": false,
-              "type": 2
+              style: 2,
+              label: `Deny`,
+              custom_id: `${team.id}|${applicant.address}|deny`,
+              disabled: false,
+              type: 2
             },
             {
-              "style": 1,
-              "label": `Accept`,
-              "custom_id": `${team.id}|${applicant.address}|accept`,
-              "disabled": false,
-              "type": 2
+              style: 1,
+              label: `Accept`,
+              custom_id: `${team.id}|${applicant.address}|accept`,
+              disabled: false,
+              type: 2
             }
           ]
         }
       ],
-      "embeds": [
-        {
-          "type": EmbedType.Rich,
-          "title": `New applicant`,
-          "description": "",
-          "color": 0x5100ff,
-          "fields": [
-            {
-              "name": `${applicant.address}`,
-              "value": `${applicant.name ? applicant.name + "\n" : ''}${applicant.socialLinks?.length ? applicant.socialLinks.map(a => a.name + ": " + a.link).join("\n") : ''} `,
-            }
-          ]
-        }
+      embeds: [
+        dataEmbed
       ]
     })
   }
