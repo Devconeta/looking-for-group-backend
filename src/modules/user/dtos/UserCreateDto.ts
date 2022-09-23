@@ -45,7 +45,7 @@ export class UserCreateDto {
   @IsArray()
   readonly roles?: UserRole[];
 
-  @ApiPropertyOptional({ isArray: true, type: Array<SocialLink> })
+  @ApiPropertyOptional({ isArray: true, type: Array })
   @IsOptional()
   @IsArray()
   readonly socialLinks?: SocialLink[];
