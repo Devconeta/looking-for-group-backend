@@ -33,11 +33,11 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
     if (!event.entity)
       return;
 
-    if (event.entity.avatar) {
+    if (event.entity.avatar && !event.entity.avatar.startsWith('https')) {
       event.entity.avatar = await this.upload(event.entity.avatar);
     }
 
-    if (event.entity.cover) {
+    if (event.entity.cover && !event.entity.cover.startsWith('https')) {
       event.entity.cover = await this.upload(event.entity.cover);
     }
   }
@@ -46,11 +46,11 @@ export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
     if (!event.entity)
       return;
 
-    if (event.entity.avatar) {
+    if (event.entity.avatar && !event.entity.avatar.startsWith('https')) {
       event.entity.avatar = await this.upload(event.entity.avatar);
     }
 
-    if (event.entity.cover) {
+    if (event.entity.cover && !event.entity.cover.startsWith('https')) {
       event.entity.cover = await this.upload(event.entity.cover);
     }
   }

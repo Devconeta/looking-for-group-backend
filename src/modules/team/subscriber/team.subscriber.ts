@@ -40,7 +40,7 @@ export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
 
     event.entity.code = this.makeId(6)
 
-    if (event.entity.avatar) {
+    if (event.entity.avatar && !event.entity.avatar.startsWith('https')) {
       event.entity.avatar = await this.upload(event.entity.avatar);
     }
   }
@@ -49,7 +49,7 @@ export class TeamSubscriber implements EntitySubscriberInterface<TeamEntity> {
     if (!event.entity)
       return;
 
-    if (event.entity.avatar) {
+    if (event.entity.avatar && !event.entity.avatar.startsWith('https')) {
       event.entity.avatar = await this.upload(event.entity.avatar);
     }
   }
