@@ -1,13 +1,12 @@
+import { SocialLink } from '../../interfaces/SocialLink';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';
 import { SeniorityType, TeamTags } from '../../constants';
+import { UserRole } from '../../constants/user-role';
 import { UseDto } from '../../decorators';
 import { TeamEntity } from '../../modules/team/team.entity';
-
-import type { UserDtoOptions } from './dtos/user.dto';
 import { UserDto } from './dtos/user.dto';
-import { UserRole } from '../../constants/user-role';
 import { UserTeamSettingsEntity } from './user-team-settings.entity';
 
 @Entity({ name: 'user' })
@@ -36,7 +35,7 @@ export class UserEntity
   level?: SeniorityType;
 
   @Column({ nullable: true, type: 'simple-array', array: true, default: "{}" })
-  socialLinks?: string[];
+  socialLinks?: SocialLink[];
 
   @Column({ nullable: true, type: 'enum', enum: UserRole, array: true, default: "{}" })
   roles?: UserRole[];

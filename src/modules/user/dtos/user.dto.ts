@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsBoolean, IsString } from 'class-validator';
+import { SocialLink } from '../../../interfaces/SocialLink';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
 import { SeniorityType, TeamTags } from '../../../constants';
@@ -38,7 +39,7 @@ export class UserDto extends AbstractDto {
 
   @ApiPropertyOptional()
   @IsArray()
-  socialLinks?: string[];
+  socialLinks?: SocialLink[];
 
   @ApiPropertyOptional({ enum: UserRole })
   roles?: UserRole[];
