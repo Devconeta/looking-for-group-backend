@@ -24,7 +24,7 @@ export class TeamController {
         description: 'Create new team',
         type: TeamDto,
     })
-    createTeam(@Body() teamPostDto: TeamCreateDto): Promise<TeamDto> {
+    createTeam(@Body() teamPostDto: TeamCreateDto): Promise<Partial<TeamEntity> & { inviteUrl: string }> {
         return this.teamService.createTeam(teamPostDto)
     }
 
@@ -48,6 +48,17 @@ export class TeamController {
     })
     applyTeam(@Body() body: TeamApplyDto): Promise<TeamDto | null> {
         return this.teamService.applyTeam(body.address, body.teamId)
+    }
+
+    @Post('accept')
+    @HttpCode(HttpStatus.OK)
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: 'Accept an application',
+        type: TeamDto,
+    })
+    acceptApplication(@Body() body: TeamApplyDto): Promise<TeamDto | null> {
+        return this.teamService.acceptApplication(body.address, body.teamId)
     }
 
     @Put(':id')
