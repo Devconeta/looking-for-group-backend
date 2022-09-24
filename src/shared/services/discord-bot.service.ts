@@ -60,16 +60,15 @@ export class DiscordBotService {
       parent: category.id,
     })
 
-    this.guild.channels.create({
+    const textChannel = await this.guild.channels.create({
       name: `${team.name} text`,
       type: ChannelType.GuildText,
       userLimit: team.maxMembers,
       parent: category.id,
-    }).then(channel => {
-      channel.createInvite().then(invite => {
-        return { inviteUrl: invite.url, categoryId: category.id }
-      })
     })
+
+    const inviteUrl = await textChannel.createInvite()
+    return { inviteUrl: inviteUrl.url, categoryId: category.id }
   }
 
   public async notifyApplicant(team: TeamEntity, applicant: UserEntity): Promise<void> {
