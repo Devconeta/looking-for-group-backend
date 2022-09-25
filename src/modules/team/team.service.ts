@@ -86,37 +86,42 @@ export class TeamService {
     }
 
     async applyTeam(address: string, teamId: string): Promise<TeamEntity | null> {
-        const team = await this.teamRepository.findOne({ where: { id: teamId } as any, relations: ['members', 'applicants'] });
+        try {
+            const team = await this.teamRepository.findOne({ where: { id: teamId } as any, relations: ['members', 'applicants'] });
 
-        if (!team || !team.isPublic)
-            throw new TeamNotFoundException();
+            if (!team || !team.isPublic)
+                throw new TeamNotFoundException();
 
-        const user = await this.userService.findOne({ address })
+            const user = await this.userService.findOne({ address })
 
-        if (!user)
-            throw new UserNotFoundException();
+            if (!user)
+                throw new UserNotFoundException();
 
-        if (team.members && !team.members.length) {
-            if (team.members.map(u => u.address).includes(user.address))
-                throw new UserAlreadyAMemberException();
-            else
-                team.applicants.push(user)
-        } else {
-            team.applicants = [user]
+            if (team.members && !team.members.length) {
+                if (team.members.map(u => u.address).includes(user.address))
+                    throw new UserAlreadyAMemberException();
+                else
+                    team.applicants.push(user)
+            } else {
+                team.applicants = [user]
+            }
+
+            if (team.applicants && !team.applicants.length) {
+                if (team.applicants.map(u => u.address).includes(user.address))
+                    throw new UserAlreadyAppliedException();
+                else
+                    team.applicants.push(user)
+            } else {
+                team.applicants = [user]
+            }
+
+            this.discordService.notifyApplicant(team, user)
+
+            return this.teamRepository.save(team);
+        } catch (error) {
+            console.log(error)
+            throw error
         }
-
-        if (team.applicants && !team.applicants.length) {
-            if (team.applicants.map(u => u.address).includes(user.address))
-                throw new UserAlreadyAppliedException();
-            else
-                team.applicants.push(user)
-        } else {
-            team.applicants = [user]
-        }
-
-        this.discordService.notifyApplicant(team, user)
-
-        return this.teamRepository.save(team);
     }
 
     async acceptApplication(address: string, teamId: string): Promise<TeamEntity | null> {
