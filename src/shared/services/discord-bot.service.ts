@@ -16,7 +16,11 @@ export class DiscordBotService {
     }
 
     private async login(): Promise<void> {
+<<<<<<< HEAD
         await this.client.login(process.env.DISCORD_BOT_TOKEN)
+=======
+        //await this.client.login(process.env.DISCORD_BOT_TOKEN)
+>>>>>>> 5f9e017880f274d2de9c85d4662eb48eafaf6714
     }
 
     private setupListeners(): void {
@@ -86,8 +90,8 @@ export class DiscordBotService {
                 { name: 'Address', value: `${applicant.address}` },
                 { name: '\u200B', value: '\u200B' },
                 ...(applicant.name ? [{ name: 'Name', value: `${applicant.name ? applicant.name + "\n" : ''}`, inline: true }] : []),
-                ...(applicant.socialLinks?.length ? .
-            [{ name: 'Socials', value: `${applicant.socialLinks?.length ? applicant.socialLinks.filter(a => a.link != null).map(a => a.name + ": " + a.link).join("\n") : ''}`, inline: false }]
+                ...(applicant.socialLinks?.length ?
+                    [{ name: 'Socials', value: `${applicant.socialLinks?.length ? applicant.socialLinks.filter(a => a.link != null).map(a => a.name + ": " + a.link).join("\n") : ''}`, inline: false }]
                     : []),
             )
             .setTimestamp()
