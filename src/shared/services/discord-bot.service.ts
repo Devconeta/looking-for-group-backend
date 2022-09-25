@@ -16,7 +16,7 @@ export class DiscordBotService {
     }
 
     private async login(): Promise<void> {
-        //await this.client.login(process.env.DISCORD_BOT_TOKEN)
+        await this.client.login(process.env.DISCORD_BOT_TOKEN)
     }
 
     private setupListeners(): void {
