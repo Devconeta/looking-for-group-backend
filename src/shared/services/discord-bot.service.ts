@@ -32,10 +32,9 @@ export class DiscordBotService {
       const [teamId, userAddress, action] = interaction.customId?.split('|') || []
 
       if (action === 'deny') {
-        await interaction.message.delete()
         await interaction.reply('Applicant rejected');
-      } else if (action === 'accept') {
         await interaction.message.delete()
+      } else if (action === 'accept') {
         //post request using fetch
         await fetch('http://localhost:3000/teams/accept', {
           method: 'POST',
@@ -49,6 +48,7 @@ export class DiscordBotService {
         })
 
         await interaction.reply('Applicant accepted!');
+        await interaction.message.delete()
       }
     });
   }
