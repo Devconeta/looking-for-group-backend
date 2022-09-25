@@ -47,7 +47,12 @@ export class TeamController {
         type: TeamDto,
     })
     applyTeam(@Body() body: TeamApplyDto): Promise<TeamDto | null> {
-        return this.teamService.applyTeam(body.address, body.teamId)
+        try {
+            return this.teamService.applyTeam(body.address, body.teamId)
+        } catch (e) {
+            console.log(e)
+            throw e
+        }
     }
 
     @Post('accept')
