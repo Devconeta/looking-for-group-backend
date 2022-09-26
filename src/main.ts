@@ -111,7 +111,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   const crPath = '/etc/letsencrypt/live/devconeta.com/fullchain.pem';
   const pkPath = '/etc/letsencrypt/live/devconeta.com/privkey.pem';
 
-  if (existsSync(crPath) && existsSync(pkPath)) {
+  if (existsSync(crPath) && existsSync(pkPath) && false) {
 
     https.createServer({
       key: readFileSync(pkPath),
