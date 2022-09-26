@@ -3,7 +3,6 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import express from 'express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import compression from 'compression';
 import { middleware as expressCtx } from 'express-ctx';
@@ -26,16 +25,12 @@ import { TranslationService } from './shared/services/translation.service';
 import { SharedModule } from './shared/shared.module';
 import bodyParser from 'body-parser'
 
-import * as http from 'http';
-import * as https from 'https';
-
 export async function bootstrap(): Promise<NestExpressApplication> {
-  const server = express();
   initializeTransactionalContext();
   patchTypeORMRepositoryWithBaseRepository();
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter(server),
+    new ExpressAdapter(),
     { cors: true },
   );
   app.enable('trust proxy'); // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
@@ -106,23 +101,9 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     app.enableShutdownHooks();
   }
 
-  await app.init();
-
-  const crPath = '/etc/letsencrypt/live/devconeta.com/fullchain.pem';
-  const pkPath = '/etc/letsencrypt/live/devconeta.com/privkey.pem';
-
-  if (existsSync(crPath) && existsSync(pkPath) && false) {
-
-    https.createServer({
-      key: readFileSync(pkPath),
-      cert: readFileSync(crPath)
-    }, server).listen(3443);
-  }
-
   const port = configService.appConfig.port;
-  http.createServer(server).listen(port);
 
-
+  await app.listen(port);
   console.info(`server running on port ${port}`);
 
   return app;
