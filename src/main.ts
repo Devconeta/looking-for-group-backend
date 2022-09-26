@@ -108,8 +108,8 @@ export async function bootstrap(): Promise<NestExpressApplication> {
 
   await app.init();
 
-  const crPath = '/etc/letsencrypt/live/mechabrawlers.online/fullchain.pem';
-  const pkPath = '/etc/letsencrypt/live/mechabrawlers.online/privkey.pem';
+  const crPath = '/etc/letsencrypt/live/devconeta.com/fullchain.pem';
+  const pkPath = '/etc/letsencrypt/live/devconeta.com/privkey.pem';
 
   if (existsSync(crPath) && existsSync(pkPath)) {
 
